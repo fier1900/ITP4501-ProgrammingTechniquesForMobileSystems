@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Lab06_Q1</string>
+    <string name="url_slowphp">http://ictlab.tyict.vtc.edu.hk/~nelsonc/mobile/slow_page.php</string>
+    <string name="url_json">https://api.myjson.com/bins/14zqbl</string>
+</resources>

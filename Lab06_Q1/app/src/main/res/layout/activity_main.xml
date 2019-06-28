@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/edTextUrl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/url_json"
+        android:textColor="#3F51B5"
+        android:textSize="14dp" />
+
+    <Button
+        android:id="@+id/buttonGreeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="getGreeting"
+        android:text="Greeting" />
+
+    <Button
+        android:id="@+id/buttonRed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="changeRed"
+        android:text="Red" />
+
+    <Button
+        android:id="@+id/buttonGreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="changeGreen"
+        android:text="Green" />
+
+    <TextView
+        android:id="@+id/textViewGreeting"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFEB3B"
+        android:gravity="center_horizontal" />
+
+</LinearLayout>

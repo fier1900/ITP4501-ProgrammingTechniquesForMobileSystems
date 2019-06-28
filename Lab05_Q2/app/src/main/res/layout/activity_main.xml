@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    <TableLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:stretchColumns="1">
+        <TableRow android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView android:text="Enter name:" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            <EditText android:text="" android:id="@+id/ETname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></EditText>
+        </TableRow>
+    </TableLayout>
+    <Button android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:text="Play"
+        android:id="@+id/playButton" android:onClick="clickHandler">
+    </Button>
+
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5sp"
+        android:gravity="center_horizontal"
+        android:id="@+id/TVmsg" >
+    </TextView>
+</LinearLayout>

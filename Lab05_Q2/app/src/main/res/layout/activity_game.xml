@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TableLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:stretchColumns="1">
+        <TableRow android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView android:text="Name:" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            <TextView android:text="" android:id="@+id/TVname"
+                android:layout_width="wrap_content" android:layout_height="wrap_content">
+            </TextView>
+        </TableRow>
+        <TableRow android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView android:text="Trial:" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            <TextView android:text="" android:id="@+id/TVtrial"
+                android:layout_width="wrap_content" android:layout_height="wrap_content">
+            </TextView>
+        </TableRow>
+        <Button android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:text="Finish"
+            android:onClick="onFinish">
+        </Button>
+    </TableLayout>
+</LinearLayout>

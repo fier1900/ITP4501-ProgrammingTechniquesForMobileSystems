@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Morra</string>
+    <string name="welcome_msg">Welcome to this Morra Game!</string>
+</resources>
