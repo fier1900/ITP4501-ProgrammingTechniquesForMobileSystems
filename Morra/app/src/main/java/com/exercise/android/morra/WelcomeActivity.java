@@ -39,7 +39,8 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void onClickStartGame(View view) {
-
+        Intent intent = new Intent(this, GameplayActivity.class);
+        startActivity(intent);
     }
 
     public void onClickViewHistory(View view) {
