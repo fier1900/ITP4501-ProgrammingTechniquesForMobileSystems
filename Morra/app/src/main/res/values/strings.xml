@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Morra</string>
-    <string name="welcome_msg">Welcome to this Morra Game!</string>
+
+    <string name="welcome_msg">Welcome,</string>
+    <string name="start_btn">Start Game</string>
+    <string name="history_btn">View History</string>
+    <string name="edit_info_btn">Edit Info</string>
+    <string name="quit_btn">Quit</string>
+
+    <string name="welcome_newplayer_msg">Welcome, New Player!</string>
+    <string name="registration_msg">Please Register Before Playing</string>
+    <string name="reg_player_name">Enter Your Name</string>
+    <string name="reg_dob">Enter Your Date of Birth</string>
+    <string name="reg_phone">Enter Your Phone Number</string>
+    <string name="reg_email">Enter Your Email Address</string>
+    <string name="reg_register">Register</string>
+    <string name="reg_cancel">Cancel</string>
 </resources>

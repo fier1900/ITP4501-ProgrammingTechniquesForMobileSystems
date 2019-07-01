@@ -4,17 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
     tools:context=".WelcomeActivity">
 
-
-
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="160dp"
+        android:src="@drawable/morra_logo" />
+
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="25dp"
         android:text="@string/welcome_msg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#FFFFFF"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:onClick="onClickStartGame"
+        android:text="@string/start_btn" />
+
+    <Button
+        android:id="@+id/btnViewHistory"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:onClick="onClickViewHistory"
+        android:text="@string/history_btn" />
+
+    <Button
+        android:id="@+id/btnEditInfo"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:onClick="onClickEditInfo"
+        android:text="@string/edit_info_btn" />
+
+    <Button
+        android:id="@+id/btnQuit"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:onClick="onClickQuit"
+        android:text="@string/quit_btn" />
 
 </LinearLayout>
