@@ -19,21 +19,23 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
         tvWelcome = findViewById(R.id.tvWelcome);
 
+        onReturnCheckNewPlayer();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (resultCode == RESULT_OK && (requestCode == 0 || requestCode == 1)) {
+            onReturnCheckNewPlayer();
+        }
+    }
+
+    protected void onReturnCheckNewPlayer(){
         SharedPreferences playerInfo = getSharedPreferences(PREFS_NAME, 0);
         if (!playerInfo.contains("PlayerName")) {
             Intent intent = new Intent(this, RegistrationActivity.class);
             startActivityForResult(intent, 0);
         } else {
-            String welcome = tvWelcome.getText().toString() + " " + playerInfo.getString("PlayerName", "") + "!";
-            tvWelcome.setText(welcome);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (resultCode == RESULT_OK && requestCode == 0) {
-            SharedPreferences playerInfo = getSharedPreferences(PREFS_NAME, 0);
-            String welcome = tvWelcome.getText().toString() + " " + playerInfo.getString("PlayerName", "") + "!";
+            String welcome = "Welcome, " + playerInfo.getString("PlayerName", "") + "!";
             tvWelcome.setText(welcome);
         }
     }
@@ -44,11 +46,13 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void onClickViewHistory(View view) {
-
+        Intent intent = new Intent(this, RecordActivity.class);
+        startActivity(intent);
     }
 
     public void onClickEditInfo(View view) {
-
+        Intent intent = new Intent(this, UpdateInfoActivity.class);
+        startActivityForResult(intent, 1);
     }
 
     public void onClickQuit(View view) {
