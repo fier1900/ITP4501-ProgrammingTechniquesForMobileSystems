@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -29,13 +30,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class GameplayActivity extends AppCompatActivity implements View.OnTouchListener {
+public class GameplayActivity extends AppCompatActivity {
     LinearLayout layout;
     TextView tvOpponentName, tvOpponentFlag;
     ImageView imgOpponentFlag;
     String urlPre, opponentName, opponentCountry;
     int playerLeft, playerRight, opponentID, opponentLeft, opponentRight, opponentGuess, bitmapWidth, bitmapHeight;
     int[][] handsPositon;
+    GestureDetector gestureDetector;
+    OnGestureListener gestureListener;
     boolean playerHandLeftToggle, playerHandRightToggle;
     Bitmap playerHandLeftStone, playerHandLeftPaper, playerHandRightStone, playerHandRightPaper, opponentHandLeftStone, opponentHandRightStone, opponentHandLeftPaper, opponentHandRightPaper;
 
@@ -76,15 +79,50 @@ public class GameplayActivity extends AppCompatActivity implements View.OnTouchL
                 canvas.drawBitmap(playerHandRightStone, handsPositon[3][0], handsPositon[3][1], null);
             }
 
-            if (checkGuess()){
+            if (checkGuess()) {
                 paint.setColor(Color.GREEN);
-            }else {
+            } else {
                 paint.setColor(Color.RED);
             }
             canvas.drawText(String.valueOf(opponentGuess), 700, 1100, paint);
             invalidate();
         }
     }
+
+    class OnGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent e) {
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            Toast.makeText(getApplicationContext(), "tap", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            if ((distanceX >= 70 || distanceX <= -70) && (distanceY <= 50 && distanceY >= -50)) {
+                Toast.makeText(getApplicationContext(), "scrollll", Toast.LENGTH_SHORT).show();
+            }
+            return false;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return false;
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,13 +146,16 @@ public class GameplayActivity extends AppCompatActivity implements View.OnTouchL
         opponentHandLeftPaper = BitmapFactory.decodeResource(getResources(), R.drawable.oppo_left_paper);
         opponentHandRightPaper = BitmapFactory.decodeResource(getResources(), R.drawable.oppo_right_paper);
 
-        bitmapWidth = 500;
-        bitmapHeight = 500;
+        bitmapWidth = 650;
+        bitmapHeight = 850;
 
         playerHandLeftToggle = false;
         playerHandRightToggle = false;
 
         handsPositon = new int[][]{{140, 200}, {850, 200}, {140, 1600}, {850, 1600}};
+
+        gestureListener = new OnGestureListener();
+        gestureDetector = new GestureDetector(getApplicationContext(), gestureListener);
 
         urlPre = "https://4qm49vppc3.execute-api.us-east-1.amazonaws.com/Prod/itp4501_api/opponent/";
 
@@ -123,23 +164,23 @@ public class GameplayActivity extends AppCompatActivity implements View.OnTouchL
 
         GameplayView gameplayView = new GameplayView(this);
         layout.addView(gameplayView);
-        gameplayView.setOnTouchListener(this);
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             //Check if the x and y position of the touch is inside the bitmap
-            if (x > handsPositon[2][0] && x < handsPositon[2][0] + bitmapWidth && y > handsPositon[2][1] && y < handsPositon[2][1] + bitmapHeight) {
+            if (x > handsPositon[2][0] && x < handsPositon[2][0] + bitmapWidth && y > handsPositon[2][1] + 300 && y < handsPositon[2][1] + bitmapHeight) {
                 //Bitmap touched
                 playerHandLeftToggle = !playerHandLeftToggle;
-            } else if (x > handsPositon[3][0] && x < handsPositon[3][0] + bitmapWidth && y > handsPositon[3][1] && y < handsPositon[3][1] + bitmapHeight) {
+            } else if (x > handsPositon[3][0] && x < handsPositon[3][0] + bitmapWidth && y > handsPositon[3][1] + 300 && y < handsPositon[3][1] + bitmapHeight) {
                 //Bitmap touched
                 playerHandRightToggle = !playerHandRightToggle;
             }
         }
+        gestureDetector.onTouchEvent(event);
         return true;
     }
 
@@ -234,12 +275,13 @@ public class GameplayActivity extends AppCompatActivity implements View.OnTouchL
                 opponentName = jsonObject.getString("name");
                 opponentCountry = jsonObject.getString("country");
 
+                GetOpponentHandsTask task = new GetOpponentHandsTask();
+                task.execute(urlPre + opponentID);
+
                 tvOpponentName.setText(opponentName);
                 tvOpponentFlag.setText(opponentCountry);
                 updateOpponentFlag(opponentCountry);
 
-                GetOpponentHandsTask task = new GetOpponentHandsTask();
-                task.execute(urlPre + opponentID);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
