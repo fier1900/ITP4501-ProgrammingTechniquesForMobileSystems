@@ -47,7 +47,6 @@ public class RegistrationActivity extends AppCompatActivity {
             playerInfoEditor.commit();
 
             Intent intent = new Intent();
-            intent.putExtra("playerName", playerName);
             setResult(RESULT_OK, intent);
             super.finish();
         }
