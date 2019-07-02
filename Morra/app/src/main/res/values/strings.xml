@@ -15,4 +15,8 @@
     <string name="reg_email">Enter Your Email Address</string>
     <string name="reg_register">Register</string>
     <string name="reg_cancel">Cancel</string>
+
+    <string name="update_info_msg">Update Your Info</string>
+    <string name="update_msg">Update Info</string>
+    <string name="delete_msg">Delete Account</string>
 </resources>
