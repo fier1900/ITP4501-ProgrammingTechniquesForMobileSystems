@@ -19,6 +19,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,8 +41,8 @@ public class GameplayActivity extends AppCompatActivity {
     GestureDetector gestureDetector;
     OnGestureListener gestureListener;
     CountDownTimer countDownTimer;
-    boolean playerHandLeftToggle, playerHandRightToggle, isPlayerTurn, isPlayerGuessing, isPlayerWinTurn, isPlayerLoseTurn, isOpponentTurn, isOpponentGuessing, isOpponentWinTurn, isOpponentLoseTurn, isGameWin, isGameLose, showOppoonentHands;
-    Bitmap playerHandLeftStone, playerHandLeftPaper, playerHandRightStone, playerHandRightPaper, opponentHandLeftStone, opponentHandRightStone, opponentHandLeftPaper, opponentHandRightPaper, yourGuess, yourTurn, oppoTurn, playerGuessed, oppoGuessed, guessedWrong, guess0, guess5, guess10, guess15, guess20, gameWin, gameLose;
+    boolean playerHandLeftToggle, playerHandRightToggle, isPlayerTurn, isPlayerGuessing, isPlayerWinTurn, isPlayerLoseTurn, isOpponentTurn, isOpponentGuessing, isOpponentWinTurn, isOpponentLoseTurn, isGameWin, isGameLose, showOppoonentHands, isGameFinished;
+    Bitmap playerHandLeftStone, playerHandLeftPaper, playerHandRightStone, playerHandRightPaper, opponentHandLeftStone, opponentHandRightStone, opponentHandLeftPaper, opponentHandRightPaper, yourGuess, yourTurn, makeMove, oppoTurn, playerGuessed, oppoGuessed, guessedWrong, guess0, guess5, guess10, guess15, guess20, gameWin, gameLose, playAgain, sure, backToMenu;
 
     class GameplayView extends View {
         Paint paint;
@@ -104,6 +105,10 @@ public class GameplayActivity extends AppCompatActivity {
                 canvas.drawBitmap(oppoTurn, msgPosition[0] - 160, msgPosition[1], null);
             }
 
+            if (isOpponentGuessing) {
+                canvas.drawBitmap(makeMove, msgPosition[0] - 160, msgPosition[1], null);
+            }
+
             if (isPlayerGuessing) {
                 canvas.drawBitmap(yourGuess, msgPosition[0], msgPosition[1], null);
                 switch (playerGuess) {
@@ -131,6 +136,13 @@ public class GameplayActivity extends AppCompatActivity {
             if (isGameLose) {
                 canvas.drawBitmap(gameLose, msgPosition[0] + 50, msgPosition[1], null);
             }
+
+            if (isGameFinished) {
+                canvas.drawBitmap(playAgain, msgPosition[0] + 10, msgPosition[1], null);
+                canvas.drawBitmap(backToMenu, msgPosition[0] + 50, msgPosition[1] + 320, null);
+                canvas.drawBitmap(sure, msgPosition[0] + 700, msgPosition[1] + 300, null);
+
+            }
             canvas.drawText("G" + opponentGuess + ", L" + opponentLeft + ", R" + opponentRight, 500, 700, paint);
             invalidate();
         }
@@ -150,12 +162,13 @@ public class GameplayActivity extends AppCompatActivity {
         public boolean onSingleTapUp(MotionEvent e) {
             float startX = e.getX();
             float startY = e.getY();
-
-            if (startY >= 1200 && startY <= 1900) {
-//                Toast.makeText(getApplicationContext(), "tap", Toast.LENGTH_SHORT).show();
-                if (isPlayerGuessing) {
-                    isPlayerGuessing = false;
-                    checkPlayerGuess();
+            if (isGameFinished) {
+                if ((startY >= 1500 && startY <= 1800) && (startX >= 200 && startX <= 500)) {
+//                    Toast.makeText(getApplicationContext(), "return", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else if ((startY >= 1500 && startY <= 1800) && (startX >= 900 && startX <= 1200)) {
+//                    Toast.makeText(getApplicationContext(), "sure", Toast.LENGTH_SHORT).show();
+                    onNewGame();
                 }
             }
             return true;
@@ -232,51 +245,16 @@ public class GameplayActivity extends AppCompatActivity {
         guess20 = BitmapFactory.decodeResource(getResources(), R.drawable.guess_20);
         gameWin = BitmapFactory.decodeResource(getResources(), R.drawable.you_win);
         gameLose = BitmapFactory.decodeResource(getResources(), R.drawable.you_lose);
-
-        bitmapWidth = 650;
-        bitmapHeight = 850;
-        playerGuess = 0;
-
-        playerHandLeftToggle = false;
-        playerHandRightToggle = false;
-        isPlayerTurn = true;
-        isPlayerGuessing = false;
-        isPlayerWinTurn = false;
-        isPlayerLoseTurn = false;
-        isGameWin = false;
-        isGameLose = false;
-        showOppoonentHands = false;
+        makeMove = BitmapFactory.decodeResource(getResources(), R.drawable.player_move);
+        playAgain = BitmapFactory.decodeResource(getResources(), R.drawable.play_again);
+        sure = BitmapFactory.decodeResource(getResources(), R.drawable.sure);
+        backToMenu = BitmapFactory.decodeResource(getResources(), R.drawable.back);
 
         handsPosition = new int[][]{{140, 200}, {850, 200}, {140, 2000}, {850, 2000}};
         msgPosition = new int[]{200, 900};
         guessPosition = new int[]{600, 1150};
 
-        playerWinCount = 0;
-        oppWinCount = 0;
-
-        gestureListener = new OnGestureListener();
-        gestureDetector = new GestureDetector(getApplicationContext(), gestureListener);
-
-        urlPre = "https://4qm49vppc3.execute-api.us-east-1.amazonaws.com/Prod/itp4501_api/opponent/";
-
-        GetOpponentInfoTask task = new GetOpponentInfoTask();
-        task.execute(urlPre + "0");
-
-        countDownTimer = new CountDownTimer(2000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-            }
-
-            @Override
-            public void onFinish() {
-                isPlayerTurn = false;
-                isPlayerGuessing = true;
-            }
-        };
-        countDownTimer.start();
-
-        GameplayView gameplayView = new GameplayView(this);
-        layout.addView(gameplayView);
+        onNewGame();
     }
 
     @Override
@@ -316,6 +294,7 @@ public class GameplayActivity extends AppCompatActivity {
                         playerHandRightToggle = false;
                         isPlayerWinTurn = false;
                         isGameWin = true;
+                        onGameFinished();
                     }
                 };
                 countDownTimer.start();
@@ -380,6 +359,7 @@ public class GameplayActivity extends AppCompatActivity {
                         showOppoonentHands = false;
                         playerHandLeftToggle = false;
                         playerHandRightToggle = false;
+                        onGameFinished();
                     }
                 };
                 countDownTimer.start();
@@ -439,7 +419,7 @@ public class GameplayActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 isPlayerTurn = false;
-                isPlayerGuessing = true;
+                playerGuess();
             }
         };
         countDownTimer.start();
@@ -447,7 +427,10 @@ public class GameplayActivity extends AppCompatActivity {
 
     protected void goOpponentTurn() {
         isOpponentTurn = true;
-        countDownTimer = new CountDownTimer(6000, 1000) {
+        playerGuess = 0;
+        playerHandLeftToggle = false;
+        playerHandRightToggle = false;
+        countDownTimer = new CountDownTimer(2000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
             }
@@ -455,6 +438,87 @@ public class GameplayActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 isOpponentTurn = false;
+                playerMoves();
+            }
+        };
+        countDownTimer.start();
+    }
+
+    protected void onGameFinished() {
+        countDownTimer = new CountDownTimer(4000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                isGameWin = false;
+                isGameLose = false;
+                isGameFinished = true;
+            }
+        };
+        countDownTimer.start();
+    }
+
+    protected void onNewGame() {
+        bitmapWidth = 650;
+        bitmapHeight = 850;
+        playerGuess = 0;
+
+        playerHandLeftToggle = false;
+        playerHandRightToggle = false;
+        isPlayerTurn = true;
+        isPlayerGuessing = false;
+        isPlayerWinTurn = false;
+        isPlayerLoseTurn = false;
+        isOpponentGuessing = false;
+        isGameWin = false;
+        isGameLose = false;
+        showOppoonentHands = false;
+        isGameFinished = false;
+
+        playerWinCount = 0;
+        oppWinCount = 0;
+
+        gestureListener = new OnGestureListener();
+        gestureDetector = new GestureDetector(getApplicationContext(), gestureListener);
+
+        urlPre = "https://4qm49vppc3.execute-api.us-east-1.amazonaws.com/Prod/itp4501_api/opponent/";
+
+        GetOpponentInfoTask task = new GetOpponentInfoTask();
+        task.execute(urlPre + "0");
+
+        GameplayView gameplayView = new GameplayView(this);
+        layout.addView(gameplayView);
+        goPlayerTurn();
+    }
+
+    protected void playerGuess() {
+        isPlayerGuessing = true;
+        countDownTimer = new CountDownTimer(6000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                isPlayerGuessing = false;
+                checkPlayerGuess();
+            }
+        };
+        countDownTimer.start();
+    }
+
+    protected void playerMoves() {
+        isOpponentGuessing = true;
+        countDownTimer = new CountDownTimer(6000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                isOpponentGuessing = false;
                 checkOpponentGuess();
             }
         };
