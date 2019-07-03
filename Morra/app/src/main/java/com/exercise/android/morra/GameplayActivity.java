@@ -2,6 +2,8 @@ package com.exercise.android.morra;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -29,6 +31,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class GameplayActivity extends AppCompatActivity {
     LinearLayout layout;
@@ -294,6 +298,7 @@ public class GameplayActivity extends AppCompatActivity {
                         playerHandRightToggle = false;
                         isPlayerWinTurn = false;
                         isGameWin = true;
+                        saveGameLog("Win");
                         onGameFinished();
                     }
                 };
@@ -359,6 +364,7 @@ public class GameplayActivity extends AppCompatActivity {
                         showOppoonentHands = false;
                         playerHandLeftToggle = false;
                         playerHandRightToggle = false;
+                        saveGameLog("Lost");
                         onGameFinished();
                     }
                 };
@@ -575,6 +581,27 @@ public class GameplayActivity extends AppCompatActivity {
                 break;
         }
         imgOpponentFlag.setImageDrawable(drawable);
+    }
+
+    public void saveGameLog(String winOrLost) {
+        // Create a database if it does not exist
+        try {
+            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.exercise.android.morra/morraDB", null, SQLiteDatabase.CREATE_IF_NECESSARY);
+            String gameDate, gameTime;
+            SimpleDateFormat dateFormat;
+            Calendar calendar = Calendar.getInstance();
+
+            dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+            gameDate = dateFormat.format(calendar.getTime());
+
+            dateFormat = new SimpleDateFormat("hh:mm:ss");
+            gameTime = dateFormat.format(calendar.getTime());
+
+            db.execSQL("INSERT INTO GamesLog(gameDate, gameTime, opponentName, winOrLost) values ('" + gameDate + "', '" + gameTime + "', '" + opponentName + "', '" + winOrLost + "'); ");
+
+        } catch (SQLiteException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private class GetOpponentHandsTask extends AsyncTask<String, Integer, String> {

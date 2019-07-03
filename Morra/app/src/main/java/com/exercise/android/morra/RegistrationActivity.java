@@ -2,6 +2,8 @@ package com.exercise.android.morra;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,7 +38,7 @@ public class RegistrationActivity extends AppCompatActivity {
         String email = edtxtEmail.getText().toString();
 
         if (playerName.equals("") || dob.equals("") || phone.equals("") || email.equals("")) {
-            Toast.makeText(this,"Please Fill In All Your Information!",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please Fill In All Your Information!", Toast.LENGTH_LONG).show();
         } else {
             SharedPreferences playerInfo = getSharedPreferences(PREFS_NAME, 0);
             SharedPreferences.Editor playerInfoEditor = playerInfo.edit();
@@ -46,9 +48,27 @@ public class RegistrationActivity extends AppCompatActivity {
             playerInfoEditor.putString("Email", email);
             playerInfoEditor.commit();
 
+            initialDB();
+
             Intent intent = new Intent();
             setResult(RESULT_OK, intent);
             super.finish();
+        }
+    }
+
+    public void initialDB() {
+        // Create a database if it does not exist
+        try {
+            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.exercise.android.morra/morraDB", null, SQLiteDatabase.CREATE_IF_NECESSARY);
+            db.execSQL("DROP TABLE IF EXISTS GamesLog;");
+
+            db.execSQL("CREATE TABLE GamesLog (gameDate text, gameTime text, opponentName text, winOrLost text, PRIMARY KEY (gameDate, gameTime));");
+
+            // Toast.makeText(this, "Table Seller is created and initialised.", Toast.LENGTH_SHORT).show();
+
+//            db.close();
+        } catch (SQLiteException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }
