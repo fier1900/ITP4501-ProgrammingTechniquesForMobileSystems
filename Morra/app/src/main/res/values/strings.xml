@@ -19,4 +19,10 @@
     <string name="update_info_msg">Update Your Info</string>
     <string name="update_msg">Update Info</string>
     <string name="delete_msg">Delete Account</string>
+
+    <string name="rb_asc">Ascending</string>
+    <string name="rb_sid">sID</string>
+    <string name="rb_desc">Descending</string>
+    <string name="rb_sname">sName</string>
+    <string name="btn_show">Show</string>
 </resources>
