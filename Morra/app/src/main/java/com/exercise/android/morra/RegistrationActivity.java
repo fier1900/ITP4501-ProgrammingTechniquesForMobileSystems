@@ -8,7 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -17,18 +21,24 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText edtxtDOB;
     EditText edtxtPhone;
     EditText edtxtEmail;
+    ImageView imgGameLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_registration);
 
         edtxtPlayerName = findViewById(R.id.edtxtPlayerName);
         edtxtDOB = findViewById(R.id.edtxtDOB);
         edtxtPhone = findViewById(R.id.edtxtPhone);
         edtxtEmail = findViewById(R.id.edtxtEmail);
+        imgGameLogo = findViewById(R.id.imgGameLogo);
+
+        final Animation animShake = AnimationUtils.loadAnimation(this, R.anim.welcome_logo_anim);
+        imgGameLogo.startAnimation(animShake);
     }
 
     public void onClickRegister(View view) {
