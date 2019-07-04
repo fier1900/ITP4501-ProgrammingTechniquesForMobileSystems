@@ -37,8 +37,8 @@ import java.util.Calendar;
 
 public class GameplayActivity extends AppCompatActivity {
     LinearLayout layout;
-    TextView tvOpponentName, tvOpponentFlag;
-    ImageView imgOpponentFlag;
+    TextView tvOpponentName, tvOpponentFlag, tvPlayerName, tvPlayerFlag;
+    ImageView imgOpponentFlag, imgPlayerFlag;
     String urlPre, opponentName, opponentCountry;
     int playerLeft, playerRight, playerGuess, opponentID, opponentLeft, opponentRight, opponentGuess, bitmapWidth, bitmapHeight, playerWinCount, oppWinCount;
     int[][] handsPosition;
@@ -309,6 +309,9 @@ public class GameplayActivity extends AppCompatActivity {
         tvOpponentName = findViewById(R.id.tvOpponentName);
         tvOpponentFlag = findViewById(R.id.tvOpponentFlag);
         imgOpponentFlag = findViewById(R.id.imgOpponentFlag);
+        tvPlayerName = findViewById(R.id.tvPlayerName);
+        tvPlayerFlag = findViewById(R.id.tvPlayerFlag);
+        imgPlayerFlag = findViewById(R.id.imgPlayerFlag);
 
         playerHandLeftStone = BitmapFactory.decodeResource(getResources(), R.drawable.player_left_stone);
         playerHandRightStone = BitmapFactory.decodeResource(getResources(), R.drawable.player_right_stone);
@@ -649,7 +652,7 @@ public class GameplayActivity extends AppCompatActivity {
         return result;
     }
 
-    protected void updateOpponentFlag(String country) {
+    protected void updateFlagImg(ImageView imgFlag, String country) {
         Resources res = getResources();
         Drawable drawable;
         switch (country) {
@@ -672,7 +675,7 @@ public class GameplayActivity extends AppCompatActivity {
                 drawable = ResourcesCompat.getDrawable(res, R.drawable.flag_hk, null);
                 break;
         }
-        imgOpponentFlag.setImageDrawable(drawable);
+        imgFlag.setImageDrawable(drawable);
     }
 
     public void saveGameLog(String winOrLost) {
@@ -736,7 +739,7 @@ public class GameplayActivity extends AppCompatActivity {
 
                 tvOpponentName.setText(opponentName);
                 tvOpponentFlag.setText(opponentCountry);
-                updateOpponentFlag(opponentCountry);
+                updateFlagImg(imgOpponentFlag, opponentCountry);
 
             } catch (JSONException e) {
                 e.printStackTrace();
