@@ -5,11 +5,15 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.*;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class WelcomeActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "PlayerInfo";
     TextView tvWelcome;
+    ImageView imgGameLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +21,12 @@ public class WelcomeActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_welcome);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         tvWelcome = findViewById(R.id.tvWelcome);
+        imgGameLogo = findViewById(R.id.imgGameLogo);
+        final Animation animShake = AnimationUtils.loadAnimation(this, R.anim.welcome_logo_anim);
+        imgGameLogo.startAnimation(animShake);
 
         onReturnCheckNewPlayer();
     }
@@ -29,7 +38,7 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     }
 
-    protected void onReturnCheckNewPlayer(){
+    protected void onReturnCheckNewPlayer() {
         SharedPreferences playerInfo = getSharedPreferences(PREFS_NAME, 0);
         if (!playerInfo.contains("PlayerName")) {
             Intent intent = new Intent(this, RegistrationActivity.class);
