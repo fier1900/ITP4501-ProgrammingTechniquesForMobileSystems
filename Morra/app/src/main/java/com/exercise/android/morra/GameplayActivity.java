@@ -48,7 +48,7 @@ public class GameplayActivity extends AppCompatActivity {
     CountDownTimer countDownTimer;
     float progressBarTotalLength, progressBarCurrentLength;
     boolean playerHandLeftToggle, playerHandRightToggle, isPlayerTurn, isPlayerGuessing, isPlayerWinTurn, isPlayerLoseTurn, isOpponentTurn, isOpponentGuessing, isOpponentWinTurn, isOpponentLoseTurn, isGameWin, isGameLose, showOppoonentHands, isGameFinished;
-    Bitmap playerHandLeftStone, playerHandLeftPaper, playerHandRightStone, playerHandRightPaper, opponentHandLeftStone, opponentHandRightStone, opponentHandLeftPaper, opponentHandRightPaper, yourGuess, yourTurn, makeMove, oppoTurn, playerGuessed, oppoGuessed, guessedWrong, guess0, guess5, guess10, guess15, guess20, gameWin, gameLose, playAgain, sure, backToMenu;
+    Bitmap playerHandLeftStone, playerHandLeftPaper, playerHandRightStone, playerHandRightPaper, opponentHandLeftStone, opponentHandRightStone, opponentHandLeftPaper, opponentHandRightPaper, yourGuess, yourTurn, makeMove, oppoTurn, playerGuessed, oppoGuessed, guessedWrong, guess0, guess5, guess10, guess15, guess20, guessWrong0, guessWrong5, guessWrong10, guessWrong15, guessWrong20,gameWin, gameLose, playAgain, sure, backToMenu;
 
     class GameplayView extends View {
         Paint paint;
@@ -93,11 +93,48 @@ public class GameplayActivity extends AppCompatActivity {
                 canvas.drawBitmap(playerHandRightStone, handsPosition[3][0], handsPosition[3][1], null);
             }
 
-            if (isPlayerLoseTurn || isOpponentLoseTurn) {
-                canvas.drawBitmap(guessedWrong, msgPosition[0] - 170, msgPosition[1], null);
+            if (isPlayerLoseTurn) {
+                canvas.drawBitmap(guessedWrong, msgPosition[0] - 70, msgPosition[1], null);
+                switch (playerGuess) {
+                    case 0:
+                        canvas.drawBitmap(guessWrong0, guessPosition[0], guessPosition[1] + 300, null);
+                        break;
+                    case 5:
+                        canvas.drawBitmap(guessWrong5, guessPosition[0], guessPosition[1] + 300, null);
+                        break;
+                    case 10:
+                        canvas.drawBitmap(guessWrong10, guessPosition[0], guessPosition[1] + 300, null);
+                        break;
+                    case 15:
+                        canvas.drawBitmap(guessWrong15, guessPosition[0], guessPosition[1] + 300, null);
+                        break;
+                    case 20:
+                        canvas.drawBitmap(guessWrong20, guessPosition[0], guessPosition[1] + 300, null);
+                        break;
+                }
+            }
+            if (isOpponentLoseTurn) {
+                canvas.drawBitmap(guessedWrong, msgPosition[0] - 70, msgPosition[1], null);
+                switch (opponentGuess) {
+                    case 0:
+                        canvas.drawBitmap(guessWrong0, guessPosition[0], guessPosition[1] - 650, null);
+                        break;
+                    case 5:
+                        canvas.drawBitmap(guessWrong5, guessPosition[0], guessPosition[1] - 650, null);
+                        break;
+                    case 10:
+                        canvas.drawBitmap(guessWrong10, guessPosition[0], guessPosition[1] - 650, null);
+                        break;
+                    case 15:
+                        canvas.drawBitmap(guessWrong15, guessPosition[0], guessPosition[1] - 650, null);
+                        break;
+                    case 20:
+                        canvas.drawBitmap(guessWrong20, guessPosition[0], guessPosition[1] - 650, null);
+                        break;
+                }
             }
             if (isPlayerWinTurn) {
-                canvas.drawBitmap(playerGuessed, msgPosition[0] - 70, msgPosition[1], null);
+                canvas.drawBitmap(playerGuessed, msgPosition[0], msgPosition[1] + 30, null);
             }
 
             if (isPlayerTurn) {
@@ -105,16 +142,16 @@ public class GameplayActivity extends AppCompatActivity {
             }
 
             if (isOpponentWinTurn) {
-                canvas.drawBitmap(oppoGuessed, msgPosition[0] - 160, msgPosition[1], null);
+                canvas.drawBitmap(oppoGuessed, msgPosition[0] - 35, msgPosition[1] + 60, null);
             }
             if (isOpponentTurn) {
-                canvas.drawBitmap(oppoTurn, msgPosition[0] - 160, msgPosition[1], null);
+                canvas.drawBitmap(oppoTurn, msgPosition[0] + 30, msgPosition[1] + 30, null);
             }
 
             if (isOpponentGuessing) {
-                canvas.drawBitmap(makeMove, msgPosition[0] - 160, msgPosition[1], null);
+                canvas.drawBitmap(makeMove, msgPosition[0], msgPosition[1] + 70, null);
                 paint.setColor(0xAA27AFF8);
-                canvas.drawRect(0, 1200, progressBarCurrentLength, 1215, paint);
+                canvas.drawRect(0, 1400, progressBarCurrentLength, 1415, paint);
             }
 
             if (isPlayerGuessing) {
@@ -124,20 +161,20 @@ public class GameplayActivity extends AppCompatActivity {
                         canvas.drawBitmap(guess0, guessPosition[0], guessPosition[1], null);
                         break;
                     case 5:
-                        canvas.drawBitmap(guess5, guessPosition[0], guessPosition[1], null);
+                        canvas.drawBitmap(guess5, guessPosition[0]-250, guessPosition[1], null);
                         break;
                     case 10:
-                        canvas.drawBitmap(guess10, guessPosition[0], guessPosition[1], null);
+                        canvas.drawBitmap(guess10, guessPosition[0]-250, guessPosition[1], null);
                         break;
                     case 15:
-                        canvas.drawBitmap(guess15, guessPosition[0], guessPosition[1], null);
+                        canvas.drawBitmap(guess15, guessPosition[0]-270, guessPosition[1], null);
                         break;
                     case 20:
-                        canvas.drawBitmap(guess20, guessPosition[0], guessPosition[1], null);
+                        canvas.drawBitmap(guess20, guessPosition[0]-270, guessPosition[1], null);
                         break;
                 }
                 paint.setColor(0xAAFA7915);
-                canvas.drawRect(0, 1200, progressBarCurrentLength, 1215, paint);
+                canvas.drawRect(0, 1400, progressBarCurrentLength, 1415, paint);
             }
 
             if (isGameWin) {
@@ -153,6 +190,8 @@ public class GameplayActivity extends AppCompatActivity {
                 canvas.drawBitmap(sure, msgPosition[0] + 700, msgPosition[1] + 300, null);
 
             }
+
+            // opponent info for debug
             canvas.drawText("G" + opponentGuess + ", L" + opponentLeft + ", R" + opponentRight, 500, 700, paint);
             invalidate();
         }
@@ -225,7 +264,7 @@ public class GameplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_gameplay);
 
         layout = findViewById(R.id.linear);
@@ -254,6 +293,11 @@ public class GameplayActivity extends AppCompatActivity {
         guess10 = BitmapFactory.decodeResource(getResources(), R.drawable.guess_10);
         guess15 = BitmapFactory.decodeResource(getResources(), R.drawable.guess_15);
         guess20 = BitmapFactory.decodeResource(getResources(), R.drawable.guess_20);
+        guessWrong0 = BitmapFactory.decodeResource(getResources(), R.drawable.guess_wrong_0);
+        guessWrong5 = BitmapFactory.decodeResource(getResources(), R.drawable.guess_wrong_5);
+        guessWrong10 = BitmapFactory.decodeResource(getResources(), R.drawable.guess_wrong_10);
+        guessWrong15 = BitmapFactory.decodeResource(getResources(), R.drawable.guess_wrong_15);
+        guessWrong20 = BitmapFactory.decodeResource(getResources(), R.drawable.guess_wrong_20);
         gameWin = BitmapFactory.decodeResource(getResources(), R.drawable.you_win);
         gameLose = BitmapFactory.decodeResource(getResources(), R.drawable.you_lose);
         makeMove = BitmapFactory.decodeResource(getResources(), R.drawable.player_move);
@@ -261,9 +305,9 @@ public class GameplayActivity extends AppCompatActivity {
         sure = BitmapFactory.decodeResource(getResources(), R.drawable.sure);
         backToMenu = BitmapFactory.decodeResource(getResources(), R.drawable.back);
 
-        handsPosition = new int[][]{{140, 200}, {850, 200}, {140, 2000}, {850, 2000}};
-        msgPosition = new int[]{200, 900};
-        guessPosition = new int[]{600, 1150};
+        handsPosition = new int[][]{{140, 200}, {850, 200}, {140, 2200}, {850, 2200}};
+        msgPosition = new int[]{200, 1050};
+        guessPosition = new int[]{600, 1400};
         progressBarTotalLength = 1440f;
 
         onNewGame();
@@ -509,7 +553,7 @@ public class GameplayActivity extends AppCompatActivity {
 
     protected void playerGuess() {
         isPlayerGuessing = true;
-        countDownTimer = new CountDownTimer(6000, 10) {
+        countDownTimer = new CountDownTimer(1000, 10) {
             @Override
             public void onTick(long millisUntilFinished) {
                 progressBarCurrentLength = progressBarTotalLength * (millisUntilFinished / 6000f);
@@ -526,7 +570,7 @@ public class GameplayActivity extends AppCompatActivity {
 
     protected void playerMoves() {
         isOpponentGuessing = true;
-        countDownTimer = new CountDownTimer(6000, 10) {
+        countDownTimer = new CountDownTimer(1000, 10) {
             @Override
             public void onTick(long millisUntilFinished) {
                 progressBarCurrentLength = progressBarTotalLength * (millisUntilFinished / 6000f);
