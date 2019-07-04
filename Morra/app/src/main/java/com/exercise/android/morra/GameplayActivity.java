@@ -47,8 +47,10 @@ public class GameplayActivity extends AppCompatActivity {
     OnGestureListener gestureListener;
     CountDownTimer countDownTimer;
     float progressBarTotalLength, progressBarCurrentLength;
-    boolean playerHandLeftToggle, playerHandRightToggle, isPlayerTurn, isPlayerGuessing, isPlayerWinTurn, isPlayerLoseTurn, isOpponentTurn, isOpponentGuessing, isOpponentWinTurn, isOpponentLoseTurn, isGameWin, isGameLose, showOppoonentHands, isGameFinished;
-    Bitmap playerHandLeftStone, playerHandLeftPaper, playerHandRightStone, playerHandRightPaper, opponentHandLeftStone, opponentHandRightStone, opponentHandLeftPaper, opponentHandRightPaper, yourGuess, yourTurn, makeMove, oppoTurn, playerGuessed, oppoGuessed, guessedWrong, guess0, guess5, guess10, guess15, guess20, guessWrong0, guessWrong5, guessWrong10, guessWrong15, guessWrong20,gameWin, gameLose, playAgain, sure, backToMenu;
+    boolean playerHandLeftToggle, playerHandRightToggle, isPlayerTurn, isPlayerGuessing, isPlayerWinTurn, isPlayerLoseTurn, isOpponentTurn, isOpponentGuessing, isOpponentWinTurn, isOpponentLoseTurn,
+            isGameWin, isGameLose, showOpponentHands, isGameFinished;
+    Bitmap playerHandLeftStone, playerHandLeftPaper, playerHandRightStone, playerHandRightPaper, opponentHandLeftStone, opponentHandRightStone, opponentHandLeftPaper, opponentHandRightPaper,
+            yourGuess, yourTurn, makeMove, oppoTurn, playerGuessed, oppoGuessed, guessedWrong, guess0, guess5, guess10, guess15, guess20, guessWrong0, guessWrong5, guessWrong10, guessWrong15, guessWrong20, gameWin, gameLose, playAgain, sure, backToMenu;
 
     class GameplayView extends View {
         Paint paint;
@@ -62,7 +64,7 @@ public class GameplayActivity extends AppCompatActivity {
             paint.setAntiAlias(true);
             paint.setTextSize(100);
 
-            if (showOppoonentHands) {
+            if (showOpponentHands) {
                 if (opponentLeft == 0) {
                     canvas.drawBitmap(opponentHandLeftStone, handsPosition[1][0], handsPosition[1][1], null);
                 } else {
@@ -135,6 +137,23 @@ public class GameplayActivity extends AppCompatActivity {
             }
             if (isPlayerWinTurn) {
                 canvas.drawBitmap(playerGuessed, msgPosition[0], msgPosition[1] + 30, null);
+                switch (playerGuess) {
+                    case 0:
+                        canvas.drawBitmap(guessWrong0, guessPosition[0], guessPosition[1] + 300, null);
+                        break;
+                    case 5:
+                        canvas.drawBitmap(guessWrong5, guessPosition[0], guessPosition[1] + 300, null);
+                        break;
+                    case 10:
+                        canvas.drawBitmap(guessWrong10, guessPosition[0], guessPosition[1] + 300, null);
+                        break;
+                    case 15:
+                        canvas.drawBitmap(guessWrong15, guessPosition[0], guessPosition[1] + 300, null);
+                        break;
+                    case 20:
+                        canvas.drawBitmap(guessWrong20, guessPosition[0], guessPosition[1] + 300, null);
+                        break;
+                }
             }
 
             if (isPlayerTurn) {
@@ -143,6 +162,23 @@ public class GameplayActivity extends AppCompatActivity {
 
             if (isOpponentWinTurn) {
                 canvas.drawBitmap(oppoGuessed, msgPosition[0] - 35, msgPosition[1] + 60, null);
+                switch (opponentGuess) {
+                    case 0:
+                        canvas.drawBitmap(guessWrong0, guessPosition[0], guessPosition[1] - 650, null);
+                        break;
+                    case 5:
+                        canvas.drawBitmap(guessWrong5, guessPosition[0], guessPosition[1] - 650, null);
+                        break;
+                    case 10:
+                        canvas.drawBitmap(guessWrong10, guessPosition[0], guessPosition[1] - 650, null);
+                        break;
+                    case 15:
+                        canvas.drawBitmap(guessWrong15, guessPosition[0], guessPosition[1] - 650, null);
+                        break;
+                    case 20:
+                        canvas.drawBitmap(guessWrong20, guessPosition[0], guessPosition[1] - 650, null);
+                        break;
+                }
             }
             if (isOpponentTurn) {
                 canvas.drawBitmap(oppoTurn, msgPosition[0] + 30, msgPosition[1] + 30, null);
@@ -161,16 +197,16 @@ public class GameplayActivity extends AppCompatActivity {
                         canvas.drawBitmap(guess0, guessPosition[0], guessPosition[1], null);
                         break;
                     case 5:
-                        canvas.drawBitmap(guess5, guessPosition[0]-250, guessPosition[1], null);
+                        canvas.drawBitmap(guess5, guessPosition[0] - 250, guessPosition[1], null);
                         break;
                     case 10:
-                        canvas.drawBitmap(guess10, guessPosition[0]-250, guessPosition[1], null);
+                        canvas.drawBitmap(guess10, guessPosition[0] - 250, guessPosition[1], null);
                         break;
                     case 15:
-                        canvas.drawBitmap(guess15, guessPosition[0]-270, guessPosition[1], null);
+                        canvas.drawBitmap(guess15, guessPosition[0] - 270, guessPosition[1], null);
                         break;
                     case 20:
-                        canvas.drawBitmap(guess20, guessPosition[0]-270, guessPosition[1], null);
+                        canvas.drawBitmap(guess20, guessPosition[0] - 270, guessPosition[1], null);
                         break;
                 }
                 paint.setColor(0xAAFA7915);
@@ -230,18 +266,20 @@ public class GameplayActivity extends AppCompatActivity {
             float endX = e2.getX();
             float endY = e2.getY();
 
-            if (distanceY <= 50 && distanceY >= -50 && startY >= 1200 && startY <= 2100) {
-                if (distanceX >= 100) {
+            if (isPlayerGuessing) {
+                if (distanceY <= 50 && distanceY >= -50 && startY >= 1200 && startY <= 2100) {
+                    if (distanceX >= 100) {
 //                    Toast.makeText(getApplicationContext(), "swipe left", Toast.LENGTH_SHORT).show();
-                    if (playerGuess < 20) {
-                        playerGuess += 5;
-                        return true;
-                    }
-                } else if (distanceX <= -100) {
+                        if (playerGuess < 20) {
+                            playerGuess += 5;
+                            return true;
+                        }
+                    } else if (distanceX <= -100) {
 //                    Toast.makeText(getApplicationContext(), "swipe right", Toast.LENGTH_SHORT).show();
-                    if (playerGuess > 0) {
-                        playerGuess -= 5;
-                        return true;
+                        if (playerGuess > 0) {
+                            playerGuess -= 5;
+                            return true;
+                        }
                     }
                 }
             }
@@ -332,20 +370,20 @@ public class GameplayActivity extends AppCompatActivity {
     }
 
     protected void checkPlayerGuess() {
-        showOppoonentHands = true;
+        showOpponentHands = true;
         if (playerLeft + playerRight + opponentLeft + opponentRight == playerGuess) {
             playerWinCount += 1;
             if (playerWinCount >= 2) {
                 isPlayerWinTurn = true;
 
-                countDownTimer = new CountDownTimer(2000, 1000) {
+                countDownTimer = new CountDownTimer(3000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                     }
 
                     @Override
                     public void onFinish() {
-                        showOppoonentHands = false;
+                        showOpponentHands = false;
                         playerHandLeftToggle = false;
                         playerHandRightToggle = false;
                         isPlayerWinTurn = false;
@@ -357,7 +395,7 @@ public class GameplayActivity extends AppCompatActivity {
                 countDownTimer.start();
             } else {
                 isPlayerWinTurn = true;
-                countDownTimer = new CountDownTimer(2000, 1000) {
+                countDownTimer = new CountDownTimer(3000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                     }
@@ -365,7 +403,7 @@ public class GameplayActivity extends AppCompatActivity {
                     @Override
                     public void onFinish() {
                         isPlayerWinTurn = false;
-                        showOppoonentHands = false;
+                        showOpponentHands = false;
                         playerHandLeftToggle = false;
                         playerHandRightToggle = false;
                         GetOpponentHandsTask task = new GetOpponentHandsTask();
@@ -378,7 +416,7 @@ public class GameplayActivity extends AppCompatActivity {
         } else {
             playerWinCount = 0;
             isPlayerLoseTurn = true;
-            countDownTimer = new CountDownTimer(2000, 1000) {
+            countDownTimer = new CountDownTimer(3000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                 }
@@ -386,7 +424,7 @@ public class GameplayActivity extends AppCompatActivity {
                 @Override
                 public void onFinish() {
                     isPlayerLoseTurn = false;
-                    showOppoonentHands = false;
+                    showOpponentHands = false;
                     playerHandLeftToggle = false;
                     playerHandRightToggle = false;
                     GetOpponentHandsTask task = new GetOpponentHandsTask();
@@ -399,12 +437,12 @@ public class GameplayActivity extends AppCompatActivity {
     }
 
     protected void checkOpponentGuess() {
-        showOppoonentHands = true;
+        showOpponentHands = true;
         if (playerLeft + playerRight + opponentLeft + opponentRight == opponentGuess) {
             oppWinCount += 1;
             if (oppWinCount >= 2) {
                 isOpponentWinTurn = true;
-                countDownTimer = new CountDownTimer(2000, 1000) {
+                countDownTimer = new CountDownTimer(3000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                     }
@@ -413,7 +451,7 @@ public class GameplayActivity extends AppCompatActivity {
                     public void onFinish() {
                         isOpponentWinTurn = false;
                         isGameLose = true;
-                        showOppoonentHands = false;
+                        showOpponentHands = false;
                         playerHandLeftToggle = false;
                         playerHandRightToggle = false;
                         saveGameLog("Lost");
@@ -423,7 +461,7 @@ public class GameplayActivity extends AppCompatActivity {
                 countDownTimer.start();
             } else {
                 isOpponentWinTurn = true;
-                countDownTimer = new CountDownTimer(2000, 1000) {
+                countDownTimer = new CountDownTimer(3000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                     }
@@ -431,7 +469,7 @@ public class GameplayActivity extends AppCompatActivity {
                     @Override
                     public void onFinish() {
                         isOpponentWinTurn = false;
-                        showOppoonentHands = false;
+                        showOpponentHands = false;
                         playerHandLeftToggle = false;
                         playerHandRightToggle = false;
                         GetOpponentHandsTask task = new GetOpponentHandsTask();
@@ -444,7 +482,7 @@ public class GameplayActivity extends AppCompatActivity {
         } else {
             oppWinCount = 0;
             isOpponentLoseTurn = true;
-            countDownTimer = new CountDownTimer(2000, 1000) {
+            countDownTimer = new CountDownTimer(3000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                 }
@@ -452,7 +490,7 @@ public class GameplayActivity extends AppCompatActivity {
                 @Override
                 public void onFinish() {
                     isOpponentLoseTurn = false;
-                    showOppoonentHands = false;
+                    showOpponentHands = false;
                     playerHandLeftToggle = false;
                     playerHandRightToggle = false;
                     GetOpponentHandsTask task = new GetOpponentHandsTask();
@@ -532,7 +570,7 @@ public class GameplayActivity extends AppCompatActivity {
         isOpponentGuessing = false;
         isGameWin = false;
         isGameLose = false;
-        showOppoonentHands = false;
+        showOpponentHands = false;
         isGameFinished = false;
 
         playerWinCount = 0;
@@ -553,7 +591,7 @@ public class GameplayActivity extends AppCompatActivity {
 
     protected void playerGuess() {
         isPlayerGuessing = true;
-        countDownTimer = new CountDownTimer(1000, 10) {
+        countDownTimer = new CountDownTimer(6000, 10) {
             @Override
             public void onTick(long millisUntilFinished) {
                 progressBarCurrentLength = progressBarTotalLength * (millisUntilFinished / 6000f);
@@ -570,7 +608,7 @@ public class GameplayActivity extends AppCompatActivity {
 
     protected void playerMoves() {
         isOpponentGuessing = true;
-        countDownTimer = new CountDownTimer(1000, 10) {
+        countDownTimer = new CountDownTimer(6000, 10) {
             @Override
             public void onTick(long millisUntilFinished) {
                 progressBarCurrentLength = progressBarTotalLength * (millisUntilFinished / 6000f);
