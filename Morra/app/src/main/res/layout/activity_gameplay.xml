@@ -22,7 +22,8 @@
             android:layout_marginLeft="10dp"
             android:textColor="#FFFFFF"
             android:textSize="23sp"
-            android:text="Your Opponent: "/>
+            android:text="Your Opponent: "
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tvOpponentName"
@@ -31,7 +32,8 @@
             android:layout_marginLeft="15dp"
             android:textColor="#FFFFFF"
             android:textSize="23sp"
-            android:text="-"/>
+            android:text="-"
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/imgOpponentFlag"
@@ -47,7 +49,8 @@
             android:layout_marginLeft="10dp"
             android:textColor="#FFFFFF"
             android:textSize="23sp"
-            android:text="-"/>
+            android:text="-"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <LinearLayout
