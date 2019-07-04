@@ -124,7 +124,7 @@ public class RecordActivity extends AppCompatActivity {
         String title = "Game Record";
         int winCount, lostCount, maxValue, yAxisLength, xAxisLength;
         int[] maxGridCount, yAxisStart, xAxisStart;
-        float interval;
+        float interval, winBarLength, lostBarLength;
 
         public BarChartView(Context context, int winCount, int lostCount) {
             super(context);
@@ -133,41 +133,58 @@ public class RecordActivity extends AppCompatActivity {
             this.lostCount = lostCount;
             yAxisLength = 1000;
             xAxisLength = 1000;
-            yAxisStart = new int[]{230, 300};
+            interval = yAxisLength / 5f;
+            yAxisStart = new int[]{270, 300};
             xAxisStart = new int[]{yAxisStart[0], yAxisStart[1] + yAxisLength};
             maxValue = winCount > lostCount ? winCount : lostCount;
-            if (maxValue <= 25) {
+            if (maxValue <= 10) {
+                maxGridCount = new int[]{0, 2, 4, 6, 8, 10};
+            } else if (maxValue <= 25) {
                 maxGridCount = new int[]{0, 5, 10, 15, 20, 25};
             } else {
                 int multi = maxValue / 25 + (maxValue % 25 == 0 ? 0 : 1);
                 maxGridCount = new int[]{0, 5 * multi, 10 * multi, 15 * multi, 20 * multi, 25 * multi};
             }
-            interval = yAxisLength / 5f;
+            winBarLength = (float) winCount / maxGridCount[maxGridCount.length - 1] * yAxisLength;
+            lostBarLength = (float) lostCount / maxGridCount[maxGridCount.length - 1] * yAxisLength;
         }
 
         @Override
         public void onDraw(Canvas canvas) {
             super.onDraw(canvas);
 
-            // Draw the title
-            paint.setColor(Color.WHITE);
+            // draw the title
+            paint.setColor(0xFFE0DAD5);
             paint.setStyle(Paint.Style.FILL);
-            paint.setTextSize(70);
+            paint.setTextSize(60);
             canvas.drawText(title, 520, 150, paint);
 
-            paint.setStyle(Paint.Style.STROKE);
-            canvas.drawRect(200, 250, 1260, 1400, paint);
+//            canvas.drawRect(200, 250, 1260, 1400, paint);
 
+            // draw the x and y axis
             paint.setStrokeWidth(3);
             canvas.drawLine(yAxisStart[0], yAxisStart[1], yAxisStart[0], yAxisStart[1] + yAxisLength, paint);
             canvas.drawLine(xAxisStart[0], xAxisStart[1], xAxisStart[0] + xAxisLength, xAxisStart[1], paint);
 
+            // draw the x axis marker
             float x = yAxisStart[0], y = yAxisStart[1] + yAxisLength;
             for (int i = 0; i < 6; i++) {
                 canvas.drawLine(x - 30, y, x, y, paint);
                 canvas.drawText(String.valueOf(maxGridCount[i]), x - 130, y + 10, paint);
                 y -= interval;
             }
+
+            // draw the y axis marker
+            canvas.drawText("Win Count", yAxisStart[0] + 150, yAxisStart[1] + yAxisLength + 100, paint);
+            canvas.drawText("Lost Count", yAxisStart[0] + 550, yAxisStart[1] + yAxisLength + 100, paint);
+
+            // draw the win and lost count bar
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(0xFF4CAF50);
+            canvas.drawRect(yAxisStart[0] + 250, yAxisStart[1] + yAxisLength - winBarLength, yAxisStart[0] + 250 + 100, yAxisStart[1] + yAxisLength, paint);
+
+            paint.setColor(0xFFD81E3A);
+            canvas.drawRect(yAxisStart[0] + 650, yAxisStart[1] + yAxisLength - lostBarLength, yAxisStart[0] + 650 + 100, yAxisStart[1] + yAxisLength, paint);
         }
     }
 }
