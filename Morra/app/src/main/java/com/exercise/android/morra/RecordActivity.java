@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.*;
 
 public class RecordActivity extends AppCompatActivity {
@@ -22,6 +23,7 @@ public class RecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_record);
 
         tbData = findViewById(R.id.tbData);
@@ -156,12 +158,13 @@ public class RecordActivity extends AppCompatActivity {
             // draw the title
             paint.setColor(0xFFE0DAD5);
             paint.setStyle(Paint.Style.FILL);
-            paint.setTextSize(60);
+            paint.setTextSize(80);
             canvas.drawText(title, 520, 150, paint);
 
 //            canvas.drawRect(200, 250, 1260, 1400, paint);
 
             // draw the x and y axis
+            paint.setTextSize(60);
             paint.setStrokeWidth(3);
             canvas.drawLine(yAxisStart[0], yAxisStart[1], yAxisStart[0], yAxisStart[1] + yAxisLength, paint);
             canvas.drawLine(xAxisStart[0], xAxisStart[1], xAxisStart[0] + xAxisLength, xAxisStart[1], paint);
@@ -169,7 +172,7 @@ public class RecordActivity extends AppCompatActivity {
             // draw the x axis marker
             float x = yAxisStart[0], y = yAxisStart[1] + yAxisLength;
             for (int i = 0; i < 6; i++) {
-                canvas.drawLine(x - 30, y, x, y, paint);
+                canvas.drawLine(x - 35, y, x, y, paint);
                 canvas.drawText(String.valueOf(maxGridCount[i]), x - 130, y + 10, paint);
                 y -= interval;
             }
@@ -181,10 +184,10 @@ public class RecordActivity extends AppCompatActivity {
             // draw the win and lost count bar
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(0xFF4CAF50);
-            canvas.drawRect(yAxisStart[0] + 250, yAxisStart[1] + yAxisLength - winBarLength, yAxisStart[0] + 250 + 100, yAxisStart[1] + yAxisLength, paint);
+            canvas.drawRect(yAxisStart[0] + 250, yAxisStart[1] + yAxisLength - winBarLength, yAxisStart[0] + 250 + 100, yAxisStart[1] + yAxisLength - 2, paint);
 
             paint.setColor(0xFFD81E3A);
-            canvas.drawRect(yAxisStart[0] + 650, yAxisStart[1] + yAxisLength - lostBarLength, yAxisStart[0] + 650 + 100, yAxisStart[1] + yAxisLength, paint);
+            canvas.drawRect(yAxisStart[0] + 650, yAxisStart[1] + yAxisLength - lostBarLength, yAxisStart[0] + 650 + 100, yAxisStart[1] + yAxisLength - 2, paint);
         }
     }
 }
