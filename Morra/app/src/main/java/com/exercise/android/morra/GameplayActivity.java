@@ -18,6 +18,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ public class GameplayActivity extends AppCompatActivity {
     GestureDetector gestureDetector;
     OnGestureListener gestureListener;
     CountDownTimer countDownTimer;
+    float progressBarTotalLength, progressBarCurrentLength;
     boolean playerHandLeftToggle, playerHandRightToggle, isPlayerTurn, isPlayerGuessing, isPlayerWinTurn, isPlayerLoseTurn, isOpponentTurn, isOpponentGuessing, isOpponentWinTurn, isOpponentLoseTurn, isGameWin, isGameLose, showOppoonentHands, isGameFinished;
     Bitmap playerHandLeftStone, playerHandLeftPaper, playerHandRightStone, playerHandRightPaper, opponentHandLeftStone, opponentHandRightStone, opponentHandLeftPaper, opponentHandRightPaper, yourGuess, yourTurn, makeMove, oppoTurn, playerGuessed, oppoGuessed, guessedWrong, guess0, guess5, guess10, guess15, guess20, gameWin, gameLose, playAgain, sure, backToMenu;
 
@@ -111,6 +113,8 @@ public class GameplayActivity extends AppCompatActivity {
 
             if (isOpponentGuessing) {
                 canvas.drawBitmap(makeMove, msgPosition[0] - 160, msgPosition[1], null);
+                paint.setColor(0xAA27AFF8);
+                canvas.drawRect(0, 1200, progressBarCurrentLength, 1215, paint);
             }
 
             if (isPlayerGuessing) {
@@ -132,6 +136,8 @@ public class GameplayActivity extends AppCompatActivity {
                         canvas.drawBitmap(guess20, guessPosition[0], guessPosition[1], null);
                         break;
                 }
+                paint.setColor(0xAAFA7915);
+                canvas.drawRect(0, 1200, progressBarCurrentLength, 1215, paint);
             }
 
             if (isGameWin) {
@@ -219,6 +225,7 @@ public class GameplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_gameplay);
 
         layout = findViewById(R.id.linear);
@@ -257,6 +264,7 @@ public class GameplayActivity extends AppCompatActivity {
         handsPosition = new int[][]{{140, 200}, {850, 200}, {140, 2000}, {850, 2000}};
         msgPosition = new int[]{200, 900};
         guessPosition = new int[]{600, 1150};
+        progressBarTotalLength = 1440f;
 
         onNewGame();
     }
@@ -501,9 +509,10 @@ public class GameplayActivity extends AppCompatActivity {
 
     protected void playerGuess() {
         isPlayerGuessing = true;
-        countDownTimer = new CountDownTimer(6000, 1000) {
+        countDownTimer = new CountDownTimer(6000, 10) {
             @Override
             public void onTick(long millisUntilFinished) {
+                progressBarCurrentLength = progressBarTotalLength * (millisUntilFinished / 6000f);
             }
 
             @Override
@@ -517,9 +526,10 @@ public class GameplayActivity extends AppCompatActivity {
 
     protected void playerMoves() {
         isOpponentGuessing = true;
-        countDownTimer = new CountDownTimer(6000, 1000) {
+        countDownTimer = new CountDownTimer(6000, 10) {
             @Override
             public void onTick(long millisUntilFinished) {
+                progressBarCurrentLength = progressBarTotalLength * (millisUntilFinished / 6000f);
             }
 
             @Override
