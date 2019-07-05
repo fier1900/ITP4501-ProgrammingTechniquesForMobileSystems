@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="-"
-            android:textColor="#FFFFFF"
+            android:textColor="#E7264A"
             android:textSize="23sp"
             android:textStyle="bold" />
 
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="-"
-            android:textColor="#FFFFFF"
+            android:textColor="#4EABF5"
             android:textSize="23sp"
             android:textStyle="bold" />
 
