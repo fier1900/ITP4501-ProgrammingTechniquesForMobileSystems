@@ -227,7 +227,7 @@ public class GameplayActivity extends AppCompatActivity {
             }
 
             // opponent info for debug
-            canvas.drawText("G" + opponentGuess + ", L" + opponentLeft + ", R" + opponentRight, 500, 700, paint);
+            //canvas.drawText("G" + opponentGuess + ", L" + opponentLeft + ", R" + opponentRight, 500, 700, paint);
             invalidate();
         }
     }
