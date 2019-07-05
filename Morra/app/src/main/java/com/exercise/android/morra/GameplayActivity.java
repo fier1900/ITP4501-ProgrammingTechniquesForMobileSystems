@@ -1,6 +1,7 @@
 package com.exercise.android.morra;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -36,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class GameplayActivity extends AppCompatActivity {
+    public static final String PREFS_NAME = "PlayerInfo";
     LinearLayout layout;
     TextView tvOpponentName, tvOpponentFlag, tvPlayerName, tvPlayerFlag;
     ImageView imgOpponentFlag, imgPlayerFlag;
@@ -50,7 +52,8 @@ public class GameplayActivity extends AppCompatActivity {
     boolean playerHandLeftToggle, playerHandRightToggle, isPlayerTurn, isPlayerGuessing, isPlayerWinTurn, isPlayerLoseTurn, isOpponentTurn, isOpponentGuessing, isOpponentWinTurn, isOpponentLoseTurn,
             isGameWin, isGameLose, showOpponentHands, isGameFinished;
     Bitmap playerHandLeftStone, playerHandLeftPaper, playerHandRightStone, playerHandRightPaper, opponentHandLeftStone, opponentHandRightStone, opponentHandLeftPaper, opponentHandRightPaper,
-            yourGuess, yourTurn, makeMove, oppoTurn, playerGuessed, oppoGuessed, guessedWrong, guess0, guess5, guess10, guess15, guess20, guessWrong0, guessWrong5, guessWrong10, guessWrong15, guessWrong20, gameWin, gameLose, playAgain, sure, backToMenu;
+            yourGuess, yourTurn, makeMove, oppoTurn, playerGuessed, oppoGuessed, guessedWrong, guess0, guess5, guess10, guess15, guess20, guessWrong0, guessWrong5, guessWrong10, guessWrong15, guessWrong20,
+            gameWin, gameLose, playAgain, sure, backToMenu, emptyStar, fullStar;
 
     class GameplayView extends View {
         Paint paint;
@@ -95,90 +98,61 @@ public class GameplayActivity extends AppCompatActivity {
                 canvas.drawBitmap(playerHandRightStone, handsPosition[3][0], handsPosition[3][1], null);
             }
 
-            if (isPlayerLoseTurn) {
-                canvas.drawBitmap(guessedWrong, msgPosition[0] - 70, msgPosition[1], null);
+            if (isPlayerWinTurn || isPlayerLoseTurn) {
                 switch (playerGuess) {
                     case 0:
-                        canvas.drawBitmap(guessWrong0, guessPosition[0], guessPosition[1] + 300, null);
+                        canvas.drawBitmap(guessWrong0, guessPosition[0] - 180, guessPosition[1] + 100, null);
                         break;
                     case 5:
-                        canvas.drawBitmap(guessWrong5, guessPosition[0], guessPosition[1] + 300, null);
+                        canvas.drawBitmap(guessWrong5, guessPosition[0] - 180, guessPosition[1] + 100, null);
                         break;
                     case 10:
-                        canvas.drawBitmap(guessWrong10, guessPosition[0], guessPosition[1] + 300, null);
+                        canvas.drawBitmap(guessWrong10, guessPosition[0] - 180, guessPosition[1] + 100, null);
                         break;
                     case 15:
-                        canvas.drawBitmap(guessWrong15, guessPosition[0], guessPosition[1] + 300, null);
+                        canvas.drawBitmap(guessWrong15, guessPosition[0] - 180, guessPosition[1] + 100, null);
                         break;
                     case 20:
-                        canvas.drawBitmap(guessWrong20, guessPosition[0], guessPosition[1] + 300, null);
+                        canvas.drawBitmap(guessWrong20, guessPosition[0] - 180, guessPosition[1] + 100, null);
                         break;
                 }
+            }
+
+            if (isOpponentWinTurn || isOpponentLoseTurn) {
+                switch (opponentGuess) {
+                    case 0:
+                        canvas.drawBitmap(guessWrong0, guessPosition[0] - 200, guessPosition[1] - 650, null);
+                        break;
+                    case 5:
+                        canvas.drawBitmap(guessWrong5, guessPosition[0] - 200, guessPosition[1] - 650, null);
+                        break;
+                    case 10:
+                        canvas.drawBitmap(guessWrong10, guessPosition[0] - 200, guessPosition[1] - 650, null);
+                        break;
+                    case 15:
+                        canvas.drawBitmap(guessWrong15, guessPosition[0] - 200, guessPosition[1] - 650, null);
+                        break;
+                    case 20:
+                        canvas.drawBitmap(guessWrong20, guessPosition[0] - 200, guessPosition[1] - 650, null);
+                        break;
+                }
+            }
+
+            if (isPlayerLoseTurn) {
+                canvas.drawBitmap(guessedWrong, msgPosition[0] - 70, msgPosition[1], null);
             }
             if (isOpponentLoseTurn) {
                 canvas.drawBitmap(guessedWrong, msgPosition[0] - 70, msgPosition[1], null);
-                switch (opponentGuess) {
-                    case 0:
-                        canvas.drawBitmap(guessWrong0, guessPosition[0], guessPosition[1] - 650, null);
-                        break;
-                    case 5:
-                        canvas.drawBitmap(guessWrong5, guessPosition[0], guessPosition[1] - 650, null);
-                        break;
-                    case 10:
-                        canvas.drawBitmap(guessWrong10, guessPosition[0], guessPosition[1] - 650, null);
-                        break;
-                    case 15:
-                        canvas.drawBitmap(guessWrong15, guessPosition[0], guessPosition[1] - 650, null);
-                        break;
-                    case 20:
-                        canvas.drawBitmap(guessWrong20, guessPosition[0], guessPosition[1] - 650, null);
-                        break;
-                }
+            }
+            if (isOpponentWinTurn) {
+                canvas.drawBitmap(oppoGuessed, msgPosition[0] - 35, msgPosition[1] + 60, null);
             }
             if (isPlayerWinTurn) {
                 canvas.drawBitmap(playerGuessed, msgPosition[0], msgPosition[1] + 30, null);
-                switch (playerGuess) {
-                    case 0:
-                        canvas.drawBitmap(guessWrong0, guessPosition[0], guessPosition[1] + 300, null);
-                        break;
-                    case 5:
-                        canvas.drawBitmap(guessWrong5, guessPosition[0], guessPosition[1] + 300, null);
-                        break;
-                    case 10:
-                        canvas.drawBitmap(guessWrong10, guessPosition[0], guessPosition[1] + 300, null);
-                        break;
-                    case 15:
-                        canvas.drawBitmap(guessWrong15, guessPosition[0], guessPosition[1] + 300, null);
-                        break;
-                    case 20:
-                        canvas.drawBitmap(guessWrong20, guessPosition[0], guessPosition[1] + 300, null);
-                        break;
-                }
             }
 
             if (isPlayerTurn) {
                 canvas.drawBitmap(yourTurn, msgPosition[0] + 50, msgPosition[1], null);
-            }
-
-            if (isOpponentWinTurn) {
-                canvas.drawBitmap(oppoGuessed, msgPosition[0] - 35, msgPosition[1] + 60, null);
-                switch (opponentGuess) {
-                    case 0:
-                        canvas.drawBitmap(guessWrong0, guessPosition[0], guessPosition[1] - 650, null);
-                        break;
-                    case 5:
-                        canvas.drawBitmap(guessWrong5, guessPosition[0], guessPosition[1] - 650, null);
-                        break;
-                    case 10:
-                        canvas.drawBitmap(guessWrong10, guessPosition[0], guessPosition[1] - 650, null);
-                        break;
-                    case 15:
-                        canvas.drawBitmap(guessWrong15, guessPosition[0], guessPosition[1] - 650, null);
-                        break;
-                    case 20:
-                        canvas.drawBitmap(guessWrong20, guessPosition[0], guessPosition[1] - 650, null);
-                        break;
-                }
             }
             if (isOpponentTurn) {
                 canvas.drawBitmap(oppoTurn, msgPosition[0] + 30, msgPosition[1] + 30, null);
@@ -189,7 +163,6 @@ public class GameplayActivity extends AppCompatActivity {
                 paint.setColor(0xAA27AFF8);
                 canvas.drawRect(0, 1400, progressBarCurrentLength, 1415, paint);
             }
-
             if (isPlayerGuessing) {
                 canvas.drawBitmap(yourGuess, msgPosition[0], msgPosition[1], null);
                 switch (playerGuess) {
@@ -212,6 +185,32 @@ public class GameplayActivity extends AppCompatActivity {
                 paint.setColor(0xAAFA7915);
                 canvas.drawRect(0, 1400, progressBarCurrentLength, 1415, paint);
             }
+
+            Bitmap oppoStar1, oppoStar2, playerStar1, playerStar2;
+            playerStar1 = playerStar2 = emptyStar;
+            oppoStar1 = oppoStar2 = emptyStar;
+            switch (playerWinCount) {
+                case 1:
+                    playerStar1 = fullStar;
+                    break;
+                case 2:
+                    playerStar1 = playerStar2 = fullStar;
+                    break;
+            }
+            switch (oppWinCount) {
+                case 1:
+                    oppoStar1 = fullStar;
+                    break;
+                case 2:
+                    oppoStar1 = oppoStar2 = fullStar;
+                    break;
+            }
+
+            canvas.drawBitmap(oppoStar1, handsPosition[0][0] + 420, handsPosition[0][1] - 180, null);
+            canvas.drawBitmap(oppoStar2, handsPosition[0][0] + 580, handsPosition[0][1] - 180, null);
+            canvas.drawBitmap(playerStar1, handsPosition[2][0] + 420, handsPosition[2][1] + 350, null);
+            canvas.drawBitmap(playerStar2, handsPosition[2][0] + 580, handsPosition[2][1] + 350, null);
+
 
             if (isGameWin) {
                 canvas.drawBitmap(gameWin, msgPosition[0] + 120, msgPosition[1], null);
@@ -345,11 +344,39 @@ public class GameplayActivity extends AppCompatActivity {
         playAgain = BitmapFactory.decodeResource(getResources(), R.drawable.play_again);
         sure = BitmapFactory.decodeResource(getResources(), R.drawable.sure);
         backToMenu = BitmapFactory.decodeResource(getResources(), R.drawable.back);
+        emptyStar = BitmapFactory.decodeResource(getResources(), R.drawable.baseline_star_border_white_48dp);
+        fullStar = BitmapFactory.decodeResource(getResources(), R.drawable.baseline_star_white_48dp);
 
         handsPosition = new int[][]{{140, 200}, {850, 200}, {140, 2200}, {850, 2200}};
         msgPosition = new int[]{200, 1050};
         guessPosition = new int[]{600, 1400};
         progressBarTotalLength = 1440f;
+
+        SharedPreferences playerInfo = getSharedPreferences(PREFS_NAME, 0);
+        String playerName = playerInfo.getString("PlayerName", "");
+        String country = playerInfo.getString("Country", "");
+
+        String countryAbr = "";
+        switch (country) {
+            case "Hong Kong":
+                countryAbr = "HK";
+                break;
+            case "China":
+                countryAbr = "CN";
+                break;
+            case "Japan":
+                countryAbr = "JP";
+                break;
+            case "USA":
+                countryAbr = "US";
+                break;
+            case "UK":
+                countryAbr = "UK";
+                break;
+        }
+        tvPlayerFlag.setText(countryAbr);
+        tvPlayerName.setText(playerName);
+        updateFlagImg(imgPlayerFlag, country);
 
         onNewGame();
     }
@@ -361,10 +388,10 @@ public class GameplayActivity extends AppCompatActivity {
         gestureDetector.onTouchEvent(event);
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             //Check if the x and y position of the touch is inside the bitmap
-            if (x > handsPosition[2][0] && x < handsPosition[2][0] + bitmapWidth && y > handsPosition[2][1] + 300 && y < handsPosition[2][1] + bitmapHeight) {
+            if (x > handsPosition[2][0] && x < handsPosition[2][0] + bitmapWidth && y > handsPosition[2][1] + 100 && y < handsPosition[2][1] + bitmapHeight) {
                 //Bitmap touched
                 playerHandLeftToggle = !playerHandLeftToggle;
-            } else if (x > handsPosition[3][0] && x < handsPosition[3][0] + bitmapWidth && y > handsPosition[3][1] + 300 && y < handsPosition[3][1] + bitmapHeight) {
+            } else if (x > handsPosition[3][0] && x < handsPosition[3][0] + bitmapWidth && y > handsPosition[3][1] + 100 && y < handsPosition[3][1] + bitmapHeight) {
                 //Bitmap touched
                 playerHandRightToggle = !playerHandRightToggle;
             }
@@ -657,18 +684,22 @@ public class GameplayActivity extends AppCompatActivity {
         Drawable drawable;
         switch (country) {
             case "CN":
+            case "China":
                 drawable = ResourcesCompat.getDrawable(res, R.drawable.flag_cn, null);
                 break;
             case "HK":
+            case "Hong Kong":
                 drawable = ResourcesCompat.getDrawable(res, R.drawable.flag_hk, null);
                 break;
             case "JP":
+            case "Japan":
                 drawable = ResourcesCompat.getDrawable(res, R.drawable.flag_jp, null);
                 break;
             case "UK":
                 drawable = ResourcesCompat.getDrawable(res, R.drawable.flag_uk, null);
                 break;
             case "US":
+            case "USA":
                 drawable = ResourcesCompat.getDrawable(res, R.drawable.flag_us, null);
                 break;
             default:

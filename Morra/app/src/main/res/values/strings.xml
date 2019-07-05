@@ -25,4 +25,12 @@
     <string name="rb_desc">Descending</string>
     <string name="rb_sname">sName</string>
     <string name="btn_show">Show</string>
+
+    <string-array name="country_list">
+        <item>Honk Kong</item>
+        <item>China</item>
+        <item>Japan</item>
+        <item>USA</item>
+        <item>UK</item>
+    </string-array>
 </resources>
