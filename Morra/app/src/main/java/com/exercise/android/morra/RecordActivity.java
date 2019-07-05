@@ -159,7 +159,7 @@ public class RecordActivity extends AppCompatActivity {
             paint.setColor(0xFFE0DAD5);
             paint.setStyle(Paint.Style.FILL);
             paint.setTextSize(80);
-            canvas.drawText(title, 520, 150, paint);
+            canvas.drawText(title, 500, 170, paint);
 
 //            canvas.drawRect(200, 250, 1260, 1400, paint);
 
@@ -173,10 +173,12 @@ public class RecordActivity extends AppCompatActivity {
             float x = yAxisStart[0], y = yAxisStart[1] + yAxisLength;
             for (int i = 0; i < 6; i++) {
                 canvas.drawLine(x - 35, y, x, y, paint);
-                canvas.drawText(String.valueOf(maxGridCount[i]), x - 130, y + 10, paint);
+                paint.setTextAlign(Paint.Align.RIGHT);
+                canvas.drawText(String.valueOf(maxGridCount[i]), x - 60, y + 10, paint);
                 y -= interval;
             }
 
+            paint.setTextAlign(Paint.Align.LEFT);
             // draw the y axis marker
             canvas.drawText("Win Count", yAxisStart[0] + 150, yAxisStart[1] + yAxisLength + 100, paint);
             canvas.drawText("Lost Count", yAxisStart[0] + 550, yAxisStart[1] + yAxisLength + 100, paint);
