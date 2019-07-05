@@ -723,7 +723,7 @@ public class GameplayActivity extends AppCompatActivity {
             dateFormat = new SimpleDateFormat("hh:mm:ss");
             gameTime = dateFormat.format(calendar.getTime());
 
-            db.execSQL("INSERT INTO GamesLog(gameDate, gameTime, opponentName, winOrLost) values ('" + gameDate + "', '" + gameTime + "', '" + opponentName + "', '" + winOrLost + "'); ");
+            db.execSQL("INSERT INTO GamesLog(gameDate, gameTime, opponentName, country, winOrLost) values ('" + gameDate + "', '" + gameTime + "', '" + opponentName + "', '" + opponentCountry + "', '" + winOrLost + "'); ");
 
         } catch (SQLiteException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();

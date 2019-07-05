@@ -5,25 +5,21 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical"
-    tools:context=".RecordActivity"
     android:textColor="#FFFFFF"
-    >
+    tools:context=".RecordActivity">
 
     <LinearLayout
+        android:id="@+id/lineLayout"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:orientation="vertical"
-        android:id="@+id/lineLayout"
-
-        >
+        android:orientation="vertical">
 
     </LinearLayout>
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textColor="#AAFA7915"
-        >
+        android:textColor="#AAFA7915">
 
         <TableLayout
             android:id="@+id/tbData"

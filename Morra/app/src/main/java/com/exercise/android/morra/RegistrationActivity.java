@@ -84,7 +84,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
             SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.exercise.android.morra/morraDB", null, SQLiteDatabase.CREATE_IF_NECESSARY);
             db.execSQL("DROP TABLE IF EXISTS GamesLog;");
 
-            db.execSQL("CREATE TABLE GamesLog (gameDate text, gameTime text, opponentName text, winOrLost text, PRIMARY KEY (gameDate, gameTime));");
+            db.execSQL("CREATE TABLE GamesLog (gameDate text, gameTime text, opponentName text, country text, winOrLost text, PRIMARY KEY (gameDate, gameTime));");
 
             // Toast.makeText(this, "Table Seller is created and initialised.", Toast.LENGTH_SHORT).show();
 

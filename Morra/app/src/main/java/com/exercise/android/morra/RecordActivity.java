@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,7 +28,7 @@ public class RecordActivity extends AppCompatActivity {
         tbData = findViewById(R.id.tbData);
         lineLayout = findViewById(R.id.lineLayout);
 
-        fillTable(getGamesLog());
+        fillGameRecordTable(getGamesLog());
         int[] winLostCount = getWinLostCount();
 
         BarChartView barChartView = new BarChartView(this, winLostCount[0], winLostCount[1]);
@@ -66,15 +65,15 @@ public class RecordActivity extends AppCompatActivity {
         return new int[]{winCount, lostCount};
     }
 
-    public void fillTable(Cursor cursor) throws SQLiteException {
+    public void fillGameRecordTable(Cursor cursor) throws SQLiteException {
         tbData.removeAllViews();
-        fillInfo(true, "Date", "Time", "Opponent Name", "Result");
+        fillGameRecordInfo(true, "Date", "Time", "Opponent", "Country", "Result");
         while (cursor.moveToNext()) {
-            fillInfo(false, cursor.getString(cursor.getColumnIndex("gameDate")), cursor.getString(cursor.getColumnIndex("gameTime")), cursor.getString(cursor.getColumnIndex("opponentName")), cursor.getString(cursor.getColumnIndex("winOrLost")));
+            fillGameRecordInfo(false, cursor.getString(cursor.getColumnIndex("gameDate")), cursor.getString(cursor.getColumnIndex("gameTime")), cursor.getString(cursor.getColumnIndex("opponentName")), cursor.getString(cursor.getColumnIndex("country")), cursor.getString(cursor.getColumnIndex("winOrLost")));
         }
     }
 
-    public void fillInfo(boolean header, String gameDate, String gameTime, String opponentName, String winOrLost) {
+    public void fillGameRecordInfo(boolean header, String gameDate, String gameTime, String opponentName, String country, String winOrLost) {
         TableRow tr = new TableRow(this);
         if (header) {
         }
@@ -95,13 +94,19 @@ public class RecordActivity extends AppCompatActivity {
         tvTime.setText(gameTime);
         tvTime.setTextSize(textSize);
         tvTime.setTextColor(textColor);
-        tvTime.setPadding(30, 10, 30, 10);
+        tvTime.setPadding(20, 10, 30, 10);
 
         TextView tvName = new TextView(this);
         tvName.setText(opponentName);
         tvName.setTextSize(textSize);
         tvName.setTextColor(textColor);
-        tvName.setPadding(60, 10, 30, 10);
+        tvName.setPadding(50, 10, 30, 10);
+
+        TextView tvCountry = new TextView(this);
+        tvCountry.setText(country);
+        tvCountry.setTextSize(textSize);
+        tvCountry.setTextColor(textColor);
+        tvCountry.setPadding(25, 10, 30, 10);
 
         TextView tvResult = new TextView(this);
         tvResult.setText(winOrLost);
@@ -112,11 +117,12 @@ public class RecordActivity extends AppCompatActivity {
         } else if (winOrLost.equals("Lost")) {
             tvResult.setTextColor(lostTextColor);
         }
-        tvResult.setPadding(60, 10, 30, 10);
+        tvResult.setPadding(25, 10, 30, 10);
 
         tr.addView(tvDate);
         tr.addView(tvTime);
         tr.addView(tvName);
+        tr.addView(tvCountry);
         tr.addView(tvResult);
         tbData.addView(tr);
     }
