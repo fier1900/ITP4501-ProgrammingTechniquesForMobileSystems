@@ -77,7 +77,6 @@ public class RecordActivity extends AppCompatActivity {
         TableRow tr = new TableRow(this);
         if (header) {
         }
-        tr.setBackgroundColor(0xFD361C1D);
 
         int textColor = 0xFF9E8877;
         int winTextColor = 0xFF4CAF50;
