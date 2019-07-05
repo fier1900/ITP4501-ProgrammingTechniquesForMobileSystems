@@ -266,7 +266,7 @@ public class GameplayActivity extends AppCompatActivity {
             float endY = e2.getY();
 
             if (isPlayerGuessing) {
-                if (distanceY <= 50 && distanceY >= -50 && startY >= 1200 && startY <= 2100) {
+                if (distanceY <= 100 && distanceY >= -100 && startY >= 1200 && startY <= 2100) {
                     if (distanceX >= 100) {
 //                    Toast.makeText(getApplicationContext(), "swipe left", Toast.LENGTH_SHORT).show();
                         if (playerGuess < 20) {
