@@ -5,9 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -140,11 +137,5 @@ public class UpdateInfoActivity extends AppCompatActivity implements AdapterView
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-
-    private void setupWindowAnimations() {
-        Explode explode = new Explode();
-        explode.setDuration(3000);
-        getWindow().setEnterTransition(explode);
     }
 }

@@ -3,13 +3,11 @@ package com.exercise.android.morra;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.Explode;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -92,12 +90,6 @@ public class WelcomeActivity extends AppCompatActivity {
     public void onClickQuit(View view) {
         myBGM.stop();
         this.finishAffinity();
-    }
-
-    private void setupWindowAnimations() {
-        Explode explode = new Explode();
-        explode.setDuration(3000);
-        getWindow().setExitTransition(explode);
     }
 
     public void onClickMuteSwitch(View view) {

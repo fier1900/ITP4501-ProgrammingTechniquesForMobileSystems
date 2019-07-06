@@ -79,16 +79,12 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
     }
 
     public void initialDB() {
-        // Create a database if it does not exist
         try {
+            // Create a database if it does not exist
             SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.exercise.android.morra/morraDB", null, SQLiteDatabase.CREATE_IF_NECESSARY);
             db.execSQL("DROP TABLE IF EXISTS GamesLog;");
 
             db.execSQL("CREATE TABLE GamesLog (gameDate text, gameTime text, opponentName text, country text, winOrLost text, PRIMARY KEY (gameDate, gameTime));");
-
-            // Toast.makeText(this, "Table Seller is created and initialised.", Toast.LENGTH_SHORT).show();
-
-//            db.close();
         } catch (SQLiteException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -104,5 +100,11 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        this.finishAffinity();
     }
 }
