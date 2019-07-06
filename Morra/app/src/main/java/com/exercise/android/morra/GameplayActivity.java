@@ -20,6 +20,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,7 +40,7 @@ import java.util.Calendar;
 
 public class GameplayActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "PlayerInfo";
-    LinearLayout layout;
+    LinearLayout layout, oppoInfoLayout;
     TextView tvOpponentName, tvOpponentFlag, tvPlayerName, tvPlayerFlag;
     ImageView imgOpponentFlag, imgPlayerFlag;
     String urlPre, opponentName, opponentCountry;
@@ -54,6 +56,7 @@ public class GameplayActivity extends AppCompatActivity {
     Bitmap playerHandLeftStone, playerHandLeftPaper, playerHandRightStone, playerHandRightPaper, opponentHandLeftStone, opponentHandRightStone, opponentHandLeftPaper, opponentHandRightPaper,
             yourGuess, yourTurn, makeMove, oppoTurn, playerGuessed, oppoGuessed, guessedWrong, guess0, guess5, guess10, guess15, guess20, guessWrong0, guessWrong5, guessWrong10, guessWrong15, guessWrong20,
             gameWin, gameLose, playAgain, sure, backToMenu, emptyStar, fullStar;
+    Animation infoSlideOutLeft, infoSlideInRight;
 
     class GameplayView extends View {
         Paint paint;
@@ -221,13 +224,13 @@ public class GameplayActivity extends AppCompatActivity {
 
             if (isGameFinished) {
                 canvas.drawBitmap(playAgain, msgPosition[0] + 10, msgPosition[1], null);
-                canvas.drawBitmap(backToMenu, msgPosition[0] + 50, msgPosition[1] + 320, null);
-                canvas.drawBitmap(sure, msgPosition[0] + 700, msgPosition[1] + 300, null);
+                canvas.drawBitmap(backToMenu, msgPosition[0] + 50, msgPosition[1] + 335, null);
+                canvas.drawBitmap(sure, msgPosition[0] + 700, msgPosition[1] + 330, null);
 
             }
 
             // opponent info for debug
-            //canvas.drawText("G" + opponentGuess + ", L" + opponentLeft + ", R" + opponentRight, 500, 700, paint);
+            canvas.drawText("G" + opponentGuess + ", L" + opponentLeft + ", R" + opponentRight, 500, 700, paint);
             invalidate();
         }
     }
@@ -252,7 +255,33 @@ public class GameplayActivity extends AppCompatActivity {
                     finish();
                 } else if ((startY >= 1500 && startY <= 1800) && (startX >= 900 && startX <= 1200)) {
 //                    Toast.makeText(getApplicationContext(), "sure", Toast.LENGTH_SHORT).show();
+                    oppoInfoLayout.startAnimation(infoSlideOutLeft);
+                    countDownTimer = new CountDownTimer(490, 100) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            oppoInfoLayout.startAnimation(infoSlideInRight);
+                        }
+                    };
+                    countDownTimer.start();
                     onNewGame();
+                }
+            }
+
+            if (isPlayerGuessing) {
+                if ((startY >= 1500 && startY <= 2100) && (startX >= 100 && startX <= 600)) {
+                    if (playerGuess > 0) {
+                        playerGuess -= 5;
+                        return true;
+                    }
+                } else if ((startY >= 1500 && startY <= 2100) && (startX >= 800 && startX <= 1400)) {
+                    if (playerGuess < 20) {
+                        playerGuess += 5;
+                        return true;
+                    }
                 }
             }
             return true;
@@ -260,28 +289,28 @@ public class GameplayActivity extends AppCompatActivity {
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            float startX = e1.getX();
-            float startY = e1.getY();
-            float endX = e2.getX();
-            float endY = e2.getY();
-
-            if (isPlayerGuessing) {
-                if (distanceY <= 100 && distanceY >= -100 && startY >= 1200 && startY <= 2100) {
-                    if (distanceX >= 100) {
-//                    Toast.makeText(getApplicationContext(), "swipe left", Toast.LENGTH_SHORT).show();
-                        if (playerGuess < 20) {
-                            playerGuess += 5;
-                            return true;
-                        }
-                    } else if (distanceX <= -100) {
-//                    Toast.makeText(getApplicationContext(), "swipe right", Toast.LENGTH_SHORT).show();
-                        if (playerGuess > 0) {
-                            playerGuess -= 5;
-                            return true;
-                        }
-                    }
-                }
-            }
+//            float startX = e1.getX();
+//            float startY = e1.getY();
+//            float endX = e2.getX();
+//            float endY = e2.getY();
+//
+//            if (isPlayerGuessing) {
+//                if (distanceY <= 100 && distanceY >= -100 && startY >= 1200 && startY <= 2100) {
+//                    if (distanceX >= 100) {
+////                    Toast.makeText(getApplicationContext(), "swipe left", Toast.LENGTH_SHORT).show();
+//                        if (playerGuess < 20) {
+//                            playerGuess += 5;
+//                            return true;
+//                        }
+//                    } else if (distanceX <= -100) {
+////                    Toast.makeText(getApplicationContext(), "swipe right", Toast.LENGTH_SHORT).show();
+//                        if (playerGuess > 0) {
+//                            playerGuess -= 5;
+//                            return true;
+//                        }
+//                    }
+//                }
+//            }
             return true;
         }
 
@@ -300,11 +329,13 @@ public class GameplayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_gameplay);
 
         layout = findViewById(R.id.linear);
+        oppoInfoLayout = findViewById(R.id.oppoInfoLayout);
         tvOpponentName = findViewById(R.id.tvOpponentName);
         tvOpponentFlag = findViewById(R.id.tvOpponentFlag);
         imgOpponentFlag = findViewById(R.id.imgOpponentFlag);
@@ -347,10 +378,15 @@ public class GameplayActivity extends AppCompatActivity {
         emptyStar = BitmapFactory.decodeResource(getResources(), R.drawable.baseline_star_border_white_48dp);
         fullStar = BitmapFactory.decodeResource(getResources(), R.drawable.baseline_star_white_48dp);
 
+        infoSlideOutLeft = AnimationUtils.loadAnimation(this, R.anim.info_slide_out_left);
+        infoSlideInRight = AnimationUtils.loadAnimation(this, R.anim.info_slide_in_right);
+
         handsPosition = new int[][]{{140, 200}, {850, 200}, {140, 2200}, {850, 2200}};
         msgPosition = new int[]{200, 1050};
         guessPosition = new int[]{600, 1400};
         progressBarTotalLength = 1440f;
+
+        oppoInfoLayout.startAnimation(infoSlideInRight);
 
         SharedPreferences playerInfo = getSharedPreferences(PREFS_NAME, 0);
         String playerName = playerInfo.getString("PlayerName", "");
@@ -571,7 +607,7 @@ public class GameplayActivity extends AppCompatActivity {
     }
 
     protected void onGameFinished() {
-        countDownTimer = new CountDownTimer(4000, 1000) {
+        countDownTimer = new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
             }
@@ -621,10 +657,10 @@ public class GameplayActivity extends AppCompatActivity {
 
     protected void playerGuess() {
         isPlayerGuessing = true;
-        countDownTimer = new CountDownTimer(6000, 10) {
+        countDownTimer = new CountDownTimer(7000, 10) {
             @Override
             public void onTick(long millisUntilFinished) {
-                progressBarCurrentLength = progressBarTotalLength * (millisUntilFinished / 6000f);
+                progressBarCurrentLength = progressBarTotalLength * (millisUntilFinished / 7000f);
             }
 
             @Override
@@ -638,10 +674,10 @@ public class GameplayActivity extends AppCompatActivity {
 
     protected void playerMoves() {
         isOpponentGuessing = true;
-        countDownTimer = new CountDownTimer(6000, 10) {
+        countDownTimer = new CountDownTimer(7000, 10) {
             @Override
             public void onTick(long millisUntilFinished) {
-                progressBarCurrentLength = progressBarTotalLength * (millisUntilFinished / 6000f);
+                progressBarCurrentLength = progressBarTotalLength * (millisUntilFinished / 7000f);
             }
 
             @Override
@@ -723,6 +759,7 @@ public class GameplayActivity extends AppCompatActivity {
             dateFormat = new SimpleDateFormat("hh:mm:ss");
             gameTime = dateFormat.format(calendar.getTime());
 
+            db.execSQL("CREATE TABLE IF NOT EXISTS GamesLog (gameDate text, gameTime text, opponentName text, country text, winOrLost text, PRIMARY KEY (gameDate, gameTime));");
             db.execSQL("INSERT INTO GamesLog(gameDate, gameTime, opponentName, country, winOrLost) values ('" + gameDate + "', '" + gameTime + "', '" + opponentName + "', '" + opponentCountry + "', '" + winOrLost + "'); ");
 
         } catch (SQLiteException e) {
