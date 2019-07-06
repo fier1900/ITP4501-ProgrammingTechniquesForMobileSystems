@@ -5,6 +5,7 @@
     <string name="start_btn">Start Game</string>
     <string name="history_btn">View History</string>
     <string name="edit_info_btn">Edit Info</string>
+    <string name="about_btn">About</string>
     <string name="quit_btn">Quit</string>
 
     <string name="welcome_newplayer_msg">Welcome, New Player!</string>
