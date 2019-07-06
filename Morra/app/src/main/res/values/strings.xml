@@ -30,6 +30,7 @@
     <string name="credit_logo2">github.com/romannurik</string>
     <string name="credit_icon1">Icons from</string>
     <string name="credit_icon2">material.io/tools/icons</string>
+    <string name="credit_music1">Music from 鬼ごっこ！</string>
 
     <string-array name="country_list">
         <item>Honk Kong</item>
