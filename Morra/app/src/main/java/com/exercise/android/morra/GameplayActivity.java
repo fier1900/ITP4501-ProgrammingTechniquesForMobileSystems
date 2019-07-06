@@ -40,7 +40,7 @@ import java.util.Calendar;
 
 public class GameplayActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "PlayerInfo";
-    LinearLayout layout, oppoInfoLayout;
+    LinearLayout layout, oppoInfoLayout,playerInfoLayout;
     TextView tvOpponentName, tvOpponentFlag, tvPlayerName, tvPlayerFlag;
     ImageView imgOpponentFlag, imgPlayerFlag;
     String urlPre, opponentName, opponentCountry;
@@ -56,7 +56,7 @@ public class GameplayActivity extends AppCompatActivity {
     Bitmap playerHandLeftStone, playerHandLeftPaper, playerHandRightStone, playerHandRightPaper, opponentHandLeftStone, opponentHandRightStone, opponentHandLeftPaper, opponentHandRightPaper,
             yourGuess, yourTurn, makeMove, oppoTurn, playerGuessed, oppoGuessed, guessedWrong, guess0, guess5, guess10, guess15, guess20, guessWrong0, guessWrong5, guessWrong10, guessWrong15, guessWrong20,
             gameWin, gameLose, playAgain, sure, backToMenu, emptyStar, fullStar;
-    Animation infoSlideOutLeft, infoSlideInRight;
+    Animation infoSlideOutLeft, infoSlideInRight, infoSlideInLeft;
 
     class GameplayView extends View {
         Paint paint;
@@ -70,21 +70,19 @@ public class GameplayActivity extends AppCompatActivity {
             paint.setAntiAlias(true);
             paint.setTextSize(100);
 
+            Bitmap opponentHandLeft = opponentHandLeftStone;
+            Bitmap opponentHandRight = opponentHandRightStone;
             if (showOpponentHands) {
-                if (opponentLeft == 0) {
-                    canvas.drawBitmap(opponentHandLeftStone, handsPosition[1][0], handsPosition[1][1], null);
-                } else {
-                    canvas.drawBitmap(opponentHandLeftPaper, handsPosition[1][0], handsPosition[1][1], null);
+                if (opponentLeft == 5) {
+                    opponentHandLeft = opponentHandLeftPaper;
                 }
-                if (opponentRight == 0) {
-                    canvas.drawBitmap(opponentHandRightStone, handsPosition[0][0], handsPosition[0][1], null);
-                } else {
-                    canvas.drawBitmap(opponentHandRightPaper, handsPosition[0][0], handsPosition[0][1], null);
+                if (opponentRight == 5) {
+                    opponentHandRight = opponentHandRightPaper;
                 }
-            } else {
-                canvas.drawBitmap(opponentHandLeftStone, handsPosition[1][0], handsPosition[1][1], null);
-                canvas.drawBitmap(opponentHandRightStone, handsPosition[0][0], handsPosition[0][1], null);
             }
+            canvas.drawBitmap(opponentHandLeft, handsPosition[1][0], handsPosition[1][1], null);
+            canvas.drawBitmap(opponentHandRight, handsPosition[0][0], handsPosition[0][1], null);
+
 
             if (playerHandLeftToggle) {
                 playerLeft = 5;
@@ -336,6 +334,7 @@ public class GameplayActivity extends AppCompatActivity {
 
         layout = findViewById(R.id.linear);
         oppoInfoLayout = findViewById(R.id.oppoInfoLayout);
+        playerInfoLayout = findViewById(R.id.playerInfoLayout);
         tvOpponentName = findViewById(R.id.tvOpponentName);
         tvOpponentFlag = findViewById(R.id.tvOpponentFlag);
         imgOpponentFlag = findViewById(R.id.imgOpponentFlag);
@@ -380,6 +379,7 @@ public class GameplayActivity extends AppCompatActivity {
 
         infoSlideOutLeft = AnimationUtils.loadAnimation(this, R.anim.info_slide_out_left);
         infoSlideInRight = AnimationUtils.loadAnimation(this, R.anim.info_slide_in_right);
+        infoSlideInLeft = AnimationUtils.loadAnimation(this, R.anim.info_slide_in_left);
 
         handsPosition = new int[][]{{140, 200}, {850, 200}, {140, 2200}, {850, 2200}};
         msgPosition = new int[]{200, 1050};
@@ -387,6 +387,7 @@ public class GameplayActivity extends AppCompatActivity {
         progressBarTotalLength = 1440f;
 
         oppoInfoLayout.startAnimation(infoSlideInRight);
+        playerInfoLayout.startAnimation(infoSlideInLeft);
 
         SharedPreferences playerInfo = getSharedPreferences(PREFS_NAME, 0);
         String playerName = playerInfo.getString("PlayerName", "");
