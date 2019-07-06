@@ -2,8 +2,11 @@ package com.exercise.android.morra;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Explode;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -14,14 +17,20 @@ public class WelcomeActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "PlayerInfo";
     TextView tvWelcome;
     ImageView imgGameLogo;
+    MediaPlayer myBGM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_welcome);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        myBGM = MediaPlayer.create(this, R.raw.bgm_welcome);
+        myBGM.setLooping(true);
+        myBGM.start();
 
         tvWelcome = findViewById(R.id.tvWelcome);
         imgGameLogo = findViewById(R.id.imgGameLogo);
@@ -65,6 +74,17 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void onClickQuit(View view) {
+        myBGM.stop();
         this.finishAffinity();
+    }
+
+    private void setupWindowAnimations() {
+        Explode explode = new Explode();
+        explode.setDuration(3000);
+        getWindow().setExitTransition(explode);
+    }
+
+    public void onClickAbout(View view) {
+
     }
 }
