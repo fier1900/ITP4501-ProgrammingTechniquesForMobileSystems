@@ -52,7 +52,7 @@ public class GameplayActivity extends AppCompatActivity {
     CountDownTimer countDownTimer;
     float progressBarTotalLength, progressBarCurrentLength;
     boolean playerHandLeftToggle, playerHandRightToggle, isPlayerTurn, isPlayerGuessing, isPlayerWinTurn, isPlayerLoseTurn, isOpponentTurn, isOpponentGuessing, isOpponentWinTurn, isOpponentLoseTurn,
-            isGameWin, isGameLose, showOpponentHands, isGameFinished;
+            isGameWin, isGameLose, showOpponentHands, isGameFinished, isDebugMode;
     Bitmap playerHandLeftStone, playerHandLeftPaper, playerHandRightStone, playerHandRightPaper, opponentHandLeftStone, opponentHandRightStone, opponentHandLeftPaper, opponentHandRightPaper,
             yourGuess, yourTurn, makeMove, oppoTurn, playerGuessed, oppoGuessed, guessedWrong, guess0, guess5, guess10, guess15, guess20, guessWrong0, guessWrong5, guessWrong10, guessWrong15, guessWrong20,
             gameWin, gameLose, playAgain, sure, backToMenu, emptyStar, fullStar;
@@ -230,8 +230,10 @@ public class GameplayActivity extends AppCompatActivity {
                 canvas.drawBitmap(sure, msgPosition[0] + 700, msgPosition[1] + 330, null);
             }
 
-            // opponent info for debug
-            canvas.drawText("G" + opponentGuess + ", L" + opponentLeft + ", R" + opponentRight, 500, 700, paint);
+            if (isDebugMode) {
+                // opponent info for debug
+                canvas.drawText("G" + opponentGuess + ", L" + opponentLeft + ", R" + opponentRight, 500, 700, paint);
+            }
             invalidate();
         }
     }
@@ -312,6 +314,8 @@ public class GameplayActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_gameplay);
+
+        isDebugMode = false;
 
         layout = findViewById(R.id.linear);
         oppoInfoLayout = findViewById(R.id.oppoInfoLayout);
