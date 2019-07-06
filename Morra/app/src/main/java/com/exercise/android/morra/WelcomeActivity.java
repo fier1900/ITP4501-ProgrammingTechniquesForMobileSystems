@@ -32,6 +32,7 @@ public class WelcomeActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_welcome);
 
+        // setup bgm
         myBGM = MediaPlayer.create(this, R.raw.bgm_welcome);
         myBGM.setLooping(true);
         myBGM.start();
@@ -56,6 +57,8 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     }
 
+    // if no player info exist, switch to registration page
+    // else display the player name
     protected void onReturnCheckNewPlayer() {
         SharedPreferences playerInfo = getSharedPreferences(PREFS_NAME, 0);
         if (!playerInfo.contains("PlayerName")) {
@@ -92,6 +95,7 @@ public class WelcomeActivity extends AppCompatActivity {
         this.finishAffinity();
     }
 
+    // toggle bgm player and mute button icon
     public void onClickMuteSwitch(View view) {
         if (myBGM.isPlaying()){
             myBGM.pause();

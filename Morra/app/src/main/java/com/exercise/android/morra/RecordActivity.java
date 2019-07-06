@@ -35,6 +35,7 @@ public class RecordActivity extends AppCompatActivity {
         lineLayout.addView(barChartView);
     }
 
+    // retrieve database record
     public Cursor getGamesLog() {
         Cursor cursor = null;
         try {
@@ -46,6 +47,7 @@ public class RecordActivity extends AppCompatActivity {
         return cursor;
     }
 
+    // count the number of win and lost
     public int[] getWinLostCount() {
         int winCount = 0, lostCount = 0;
         Cursor cursor = null;
@@ -61,10 +63,11 @@ public class RecordActivity extends AppCompatActivity {
         } catch (SQLiteException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-//        Toast.makeText(this, winCount + ", " + lostCount, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, winCount + ", " + lostCount, Toast.LENGTH_LONG).show();
         return new int[]{winCount, lostCount};
     }
 
+    // fill in record table
     public void fillGameRecordTable(Cursor cursor) throws SQLiteException {
         tbData.removeAllViews();
         fillGameRecordInfo(true, "Date", "Time", "Opponent", "Country", "Result");
@@ -73,10 +76,9 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
+    // fill in each row in record table
     public void fillGameRecordInfo(boolean header, String gameDate, String gameTime, String opponentName, String country, String winOrLost) {
         TableRow tr = new TableRow(this);
-        if (header) {
-        }
 
         int textColor = 0xFF9E8877;
         int winTextColor = 0xFF4CAF50;
@@ -183,8 +185,8 @@ public class RecordActivity extends AppCompatActivity {
                 y -= interval;
             }
 
-            paint.setTextAlign(Paint.Align.LEFT);
             // draw the y axis marker
+            paint.setTextAlign(Paint.Align.LEFT);
             canvas.drawText("Win Count", yAxisStart[0] + 150, yAxisStart[1] + yAxisLength + 100, paint);
             canvas.drawText("Lost Count", yAxisStart[0] + 550, yAxisStart[1] + yAxisLength + 100, paint);
 

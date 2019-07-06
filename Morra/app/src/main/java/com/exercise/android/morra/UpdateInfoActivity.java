@@ -53,6 +53,7 @@ public class UpdateInfoActivity extends AppCompatActivity implements AdapterView
         spinCountry.setAdapter(countryList);
         spinCountry.setOnItemSelectedListener(this);
 
+        // retrieve player info
         SharedPreferences playerInfo = getSharedPreferences(PREFS_NAME, 0);
         playerName = playerInfo.getString("PlayerName", "");
         dob = playerInfo.getString("DOB", "");
@@ -87,6 +88,7 @@ public class UpdateInfoActivity extends AppCompatActivity implements AdapterView
         imgGameLogo.startAnimation(animShake);
     }
 
+    // remove player info
     public void onClickDelete(View view) {
         SharedPreferences playerInfo = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor playerInfoEditor = playerInfo.edit();
@@ -101,6 +103,7 @@ public class UpdateInfoActivity extends AppCompatActivity implements AdapterView
         finish();
     }
 
+    // update player info
     public void onClickUpdate(View view) {
         playerName = edtxtPlayerName.getText().toString();
         dob = edtxtDOB.getText().toString();
@@ -127,6 +130,7 @@ public class UpdateInfoActivity extends AppCompatActivity implements AdapterView
         }
     }
 
+    // setup spinner text style
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);

@@ -52,6 +52,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         spinner.setOnItemSelectedListener(this);
     }
 
+    // store new player info
     public void onClickRegister(View view) {
         String playerName = edtxtPlayerName.getText().toString();
         String dob = edtxtDOB.getText().toString();
@@ -78,6 +79,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         }
     }
 
+    // create database
     public void initialDB() {
         try {
             // Create a database if it does not exist
@@ -90,6 +92,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         }
     }
 
+    // setup spinner text style
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
@@ -102,6 +105,8 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
 
     }
 
+    // if player press back button before completing registration
+    // close the app and don't return to main menu
     @Override
     public void onBackPressed()
     {
