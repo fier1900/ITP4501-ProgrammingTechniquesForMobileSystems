@@ -21,6 +21,16 @@
     <string name="update_msg">Update Info</string>
     <string name="delete_msg">Delete Account</string>
 
+    <string name="about_msg">About</string>
+    <string name="credit_flag1">Icon made by Freepik</string>
+    <string name="credit_flag2">www.flaticon.com</string>
+    <string name="credit_text1">Text designs using</string>
+    <string name="credit_text2">flamingtext.com</string>
+    <string name="credit_logo1">Logo design using</string>
+    <string name="credit_logo2">github.com/romannurik</string>
+    <string name="credit_icon1">Icons from</string>
+    <string name="credit_icon2">material.io/tools/icons</string>
+
     <string-array name="country_list">
         <item>Honk Kong</item>
         <item>China</item>
