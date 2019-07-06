@@ -11,7 +11,7 @@
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UpdateInfoActivity"></activity>
+        <activity android:name=".UpdateInfoActivity" />
         <activity android:name=".RecordActivity" />
         <activity android:name=".GameplayActivity" />
         <activity android:name=".RegistrationActivity" />
